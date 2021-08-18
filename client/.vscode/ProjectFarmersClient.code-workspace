@@ -1,0 +1,16 @@
+{
+    "folders": [
+        {
+            "name": "Project Farmers",
+            "path": ".."
+        }
+    ],
+    "settings": {
+        "editor.fontLigatures": true,
+        "editor.formatOnPaste": true,
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+        "files.autoSave": "afterDelay"
+    }
+}
