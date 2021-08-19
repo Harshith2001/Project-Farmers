@@ -1,29 +1,23 @@
 import React, { Component } from "react";
 
-export default class Profile extends Component {
+export default class UserProf extends Component {
     render() {
         return (
             <div>
             <div id="abc">
             <nav>
                 <ul>
-                    <li><a href="/dashboard">Home</a></li>
-                    <li><a href="/profile">View Profile</a></li>
-                    <li><a href="/addcrops">Add crops</a></li>
-                    <li><a href="/orders">Orders</a></li>
+                    
+                    <li><a href="/dash-user">Home</a></li>
+                    <li><a href="/profile-user">View Profile</a></li>
+                    <li><a href="/trans">Transaction</a></li>
+                    
                     <li><a href="/">Logout</a></li>
                 </ul>
             </nav>
         </div>
             <div class="container emp-profile">
-                  {/* <div>
-            <ul>
-            <li><a href="default.asp">Home</a></li>
-            <li><a href="news.asp">News</a></li>
-            <li><a href="contact.asp">Contact</a></li>
-            <li><a href="about.asp">About</a></li>
-          </ul>
-          </div> */}
+                 
             <form method="post">
                 <div class="row">
                     <div class="col-md-4">

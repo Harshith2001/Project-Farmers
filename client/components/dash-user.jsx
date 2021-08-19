@@ -8,11 +8,11 @@ export default class dash extends Component {
                   <div class="sidebar">
     <div class="logo-details">
       <i class='bx bxl-c-plus-plus'></i>
-      <span class="logo_name">FARMER</span>
+      <span class="logo_name">USER</span>
     </div>
       <ul class="nav-links">
       <li>
-          <a href="/profile">
+          <a href="/profile-user">
             <i class='bx bx-pie-chart-alt-2' ></i>
             <span class="links_name">View profile</span>
           </a>
@@ -20,17 +20,12 @@ export default class dash extends Component {
 
         
         <li>
-          <a href="/addcrops">
+          <a href="/trans">
             <i class='bx bx-box' ></i>
-            <span class="links_name">Add crop</span>
+            <span class="links_name">Transaction</span>
           </a>
         </li>
-        <li>
-          <a href="/orders">
-            <i class='bx bx-list-ul' ></i>
-            <span class="links_name">Orders</span>
-          </a>
-        </li>
+        
         
          
         <li class="log_out">
@@ -48,10 +43,10 @@ export default class dash extends Component {
         <i class='bx bx-menu sidebarBtn'></i>
         <span class="dashboard">DASHBOARD</span>
       </div>
-      {/* <div class="search-box">
+      <div class="search-box">
         <input type="text" placeholder="Search..."/>
         <i class='bx bx-search' ></i>
-      </div> */}
+      </div>
       {/* <div class="profile-details">
         <!--<img src="images/profile.jpg" alt="">-->
         <span class="admin_name">Prem Shahi</span>

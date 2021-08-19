@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import React from "react";
-import Profile from "../components/profile" 
+import UserProf from "../components/profile-user" 
 import Head from "next/head";
 const Home: NextPage = () => {
     return (
@@ -15,7 +15,7 @@ const Home: NextPage = () => {
                 <link rel="stylesheet" href="/styles/profile.css" />
                 <link rel="stylesheet" href="/styles/nav.css" />
             </Head>
-            <Profile />
+            <UserProf />
         </>
     )
 };

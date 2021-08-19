@@ -18,12 +18,12 @@ const Home: NextPage = () => {
                 
 
                 <div className={styles.grid}>
-                    <a href="/login" className={styles.card}>
+                    <a href="/home" className={styles.card}>
                         <h2>FARMER'S LOGIN &rarr;</h2>
                         <p>Farmers most dedicating and hardworking people of Nation.</p>
                     </a>
 
-                    <a href="/login-user" className={styles.card}>
+                    <a href="/home" className={styles.card}>
                         <h2>USER'S LOGIN&rarr;</h2>
                         <p>The customer’s perception is your reality.</p>
                     </a>
