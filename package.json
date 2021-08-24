@@ -1,0 +1,23 @@
+{
+  "name": "Project-Farmers",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Harshith2001/Project-Farmers.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Harshith2001/Project-Farmers/issues"
+  },
+  "homepage": "https://github.com/Harshith2001/Project-Farmers#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
