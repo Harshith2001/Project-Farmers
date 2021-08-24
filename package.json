@@ -1,7 +1,0 @@
-{
-  "name": "project-farmers",
-  "workspaces": [
-    "client",
-    "api"
-  ]
-}
