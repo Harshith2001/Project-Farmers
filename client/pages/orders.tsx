@@ -4,12 +4,6 @@ import React from "react";
 
 import data from "../components/data";
 
-async function getData() {
-	let x = await fetch("http://localhost:3100/api/profiles");
-	let profiles = await x.json();
-	console.log(profiles[0].firstName);
-}
-getData();
 
 const Home: NextPage = () => {
 	return (

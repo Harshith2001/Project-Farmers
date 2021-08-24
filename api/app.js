@@ -23,6 +23,7 @@ const profiles = [
 ];
 // To display all the contents in the array
 app.get("/api/profiles", (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
   res.send(profiles);
 });
 // route for get api is /api/profile/id
