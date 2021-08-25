@@ -1,72 +1,49 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
-        "Helvetica Neue", sans-serif;
-    background: #f1f5f8;
-    color: #222;
-}
-
-html {
-    box-sizing: border-box;
-    padding: 50px;
-}
-*,
-*:before,
-*:after {
-    box-sizing: inherit;
-}
-
 .fresh-form {
-    font-family: Arial;
-    width: 400px;
-    margin: 0 auto;
-    background-color: white;
-    padding: 2rem;
-    box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.25);
-    border-top: 5px solid steelblue;
+	font-family: Arial;
+	width: 400px;
+	margin: 70px auto 0;
+	background-color: white;
+	padding: 2rem;
+	box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.25);
+	border-top: 5px solid steelblue;
 }
 
 .fresh-label {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-bottom: 1rem;
-    font-size: 13px;
-    color: rgb(71, 70, 70);
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	margin-bottom: 1rem;
+	font-size: 13px;
+	color: rgb(100, 90, 90);
 }
 
 .fresh-title {
-    margin-bottom: 0.5rem;
+	margin-bottom: 0.5rem;
 }
 
 .fresh-field-wrapper {
-    margin-bottom: 1.5rem;
+	margin-bottom: 1.5rem;
 }
 
 .fresh-input {
-    width: 100%;
-    background-color: lightgrey;
-    border: 0;
-    padding: 1rem;
+	width: 100%;
+	background-color: lightgrey;
+	border: 0;
+	padding: 1rem;
 }
 
 .fresh-input-textarea {
-    min-height: 150px;
+	min-height: 150px;
 }
 
 .fresh-button {
-    border: 0;
-    background-color: #eb675e;
-    display: inline-block;
-    cursor: pointer;
-    color: #ffffff;
-    font-size: 15px;
-    padding: 10px 20px;
-    margin-right: 1rem;
-    text-decoration: none;
+	border: 0;
+	background-color: #eb675e;
+	display: inline-block;
+	cursor: pointer;
+	color: #ffffff;
+	font-size: 15px;
+	padding: 10px 20px;
+	margin-right: 1rem;
+	text-decoration: none;
 }

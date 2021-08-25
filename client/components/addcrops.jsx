@@ -1,11 +1,13 @@
 import React from "react";
 import { Form, Field } from "@leveluptuts/fresh";
+import NavBar from "./NavigationBar";
 
 const onSubmit = (data) => console.log(data);
 export default function Orders() {
 	return (
-		<div>
-			<div id="abc">
+		<>
+			<NavBar />
+			{/* <div id="abc">
 				<nav>
 					<ul>
 						<li>
@@ -25,8 +27,7 @@ export default function Orders() {
 						</li>
 					</ul>
 				</nav>
-			</div>
-			<h3> </h3>
+			</div> */}
 			<Form formId="user-profile" onSubmit={onSubmit}>
 				<Field required>Name of crop</Field>
 				<Field required>Quantity</Field>
@@ -36,6 +37,6 @@ export default function Orders() {
 					<input type="file" name="file" />
 				</div>
 			</Form>
-		</div>
+		</>
 	);
 }
