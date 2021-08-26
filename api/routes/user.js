@@ -2,6 +2,8 @@
 
 import { Router } from "express";
 import profiles from "../data/users.js";
+
+// Routes - "/api/user/"
 const router = Router();
 
 router.get("/", (req, res) => {
