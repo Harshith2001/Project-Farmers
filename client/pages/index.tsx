@@ -1,14 +1,29 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
-/*
-async function getData() {
-	let x = await fetch("http://localhost:3100/api/profiles");
-	let profiles = await x.json();
-	console.log(profiles[0].firstName);
-}
-getData();
-*/
+
+//IIFE
+(async function getData() {
+	let y = {
+		id: "3",
+		userType: "farmer",
+		firstName: "ultraman",
+		lastName: "dotnet",
+		email: "harsh@gmail.com",
+		mobile: "1234037159",
+		city: "Guntur",
+	};
+
+	let x = await fetch("http://localhost:3100/api/user", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify(y),
+	});
+	let z = await x.json();
+	console.log(z);
+})();
 
 const Home: NextPage = () => {
 	return (
