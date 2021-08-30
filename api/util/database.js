@@ -11,3 +11,5 @@ class database {
 		fs.writeFileSync(this.fileName, JSON.stringify(data));
 	}
 }
+
+export default database;

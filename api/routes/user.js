@@ -1,34 +1,38 @@
 /// <reference types="express"/>
 
 import { Router } from "express";
-import profiles from "../data/users.js";
-
+import database from "../util/database.js";
 // Routes - "/api/user/"
 const router = Router();
+const profileDb = new database("./databases/profile.json");
 
 router.get("/", (req, res) => {
-	res.json(profiles);
+	let x = profileDb.read();
+	console.log(x.data);
+	res.send(x.data);
+	//res.json(x.data);
 });
 
 //Post Methods
 router.post("/", (req, res) => {
 	const profile = {
-		id: req.body.id,
+		userId: req.body.id,
 		userType: req.body.userType,
-		firstName: req.body.firstName,
-		lastName: req.body.lastName,
+		name: req.body.name,
 		email: req.body.email,
 		mobile: req.body.mobile,
 		city: req.body.city,
 	};
 	//console.log("post req got: " + req.url);
-	profiles.push(profile);
-	res.status(201).json(profile);
+	let oldData = JSON.parse(profileDb.read());
+	let newData = oldData.data.push(profile);
+	profileDb.write(newData);
+	res.status(201).json(profileDb);
 });
 
 // route for get api is /api/profile/id
 router.get("/:id", (req, res) => {
-	let a = profiles.find((user) => user.id === req.params.id);
+	let a = profileDb.find((user) => user.id === req.params.id);
 	res.json(a);
 	console.log(req.query);
 	console.log(typeof req.params.id);
