@@ -5,7 +5,7 @@ class database {
 		this.fileName = fileName;
 	}
 	read() {
-		return fs.readFileSync(this.fileName, "utf-8");
+		return JSON.parse(fs.readFileSync(this.fileName));
 	}
 	write(data) {
 		fs.writeFileSync(this.fileName, JSON.stringify(data));

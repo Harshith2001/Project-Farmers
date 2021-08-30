@@ -8,9 +8,7 @@ const profileDb = new database("./databases/profile.json");
 
 router.get("/", (req, res) => {
 	let x = profileDb.read();
-	console.log(x.data);
-	res.send(x.data);
-	//res.json(x.data);
+	res.json(x.data);
 });
 
 //Post Methods
