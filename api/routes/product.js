@@ -4,8 +4,9 @@ import crypto from "crypto";
 
 const router = Router();
 const productDb = new database("./databases/product.json");
+const profileDb = new database("./databases/profile.json");
 const productDbData = productDb.read();
-
+const profileDbData = profileDb.read();
 // Get all products
 router.get("/", (req, res) => {
 	const products = [];
@@ -25,6 +26,13 @@ router.post("/", (req, res) => {
 		quantity: req.body.quantity,
 		price: req.body.price,
 	};
+	for (let i = 0; i < profileDbData.data.length; i++) {
+		if (profileDbData.data[i].userId === req.body.userId) {
+			profileDbData.data[i].products.push(product.productId);
+			profileDb.write(profileDbData);
+			break;
+		}
+	}
 	productDbData.data.push(product);
 	productDb.write(productDbData);
 	res.status(201).json(productDb);

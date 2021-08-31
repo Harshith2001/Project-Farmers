@@ -21,6 +21,12 @@ router.post("/", (req, res) => {
 		mobile: req.body.mobile,
 		city: req.body.city,
 	};
+	if (req.body.userType === "farmer") {
+		profile.products = [];
+		profile.orders = [];
+	} else {
+		profile.orders = [];
+	}
 	dbData.data.push(profile);
 	// console.log(oldData);
 	profileDb.write(dbData);
