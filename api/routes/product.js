@@ -5,6 +5,8 @@ import crypto from "crypto";
 const router = Router();
 const productDb = new database("./databases/product.json");
 const productDbData = productDb.read();
+
+// Get all products
 router.get("/", (req, res) => {
 	const products = [];
 	for (let i = 0; i < productDbData.data.length; i++) {
@@ -28,6 +30,7 @@ router.post("/", (req, res) => {
 	res.status(201).json(productDb);
 });
 
+// For getting all the products of a particular user
 router.get("/:id", (req, res) => {
 	const products = [];
 	let userName = req.params.id;
@@ -38,4 +41,18 @@ router.get("/:id", (req, res) => {
 	}
 	res.json(products);
 });
+
+// Note: This method is written by Github Copilot
+// For deleting the product
+router.delete("/:id", (req, res) => {
+	let productId = req.params.id;
+	for (let i = 0; i < productDbData.data.length; i++) {
+		if (productDbData.data[i].productId === productId) {
+			productDbData.data.splice(i, 1);
+		}
+	}
+	productDb.write(productDbData);
+	res.json(productDb);
+});
+
 export default router;
