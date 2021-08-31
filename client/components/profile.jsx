@@ -20,20 +20,15 @@ export default class Profile extends Component {
 								<a href="/orders">Orders</a>
 							</li>
 							<li>
+								<a href="/trans">Transaction</a>
+							</li>
+							<li>
 								<a href="/">Logout</a>
 							</li>
 						</ul>
 					</nav>
 				</div>
 				<div className="container emp-profile">
-					{/* <div>
-            <ul>
-            <li><a href="default.asp">Home</a></li>
-            <li><a href="news.asp">News</a></li>
-            <li><a href="contact.asp">Contact</a></li>
-            <li><a href="about.asp">About</a></li>
-          </ul>
-          </div> */}
 					<form method="post">
 						<div className="row">
 							<div className="col-md-4">

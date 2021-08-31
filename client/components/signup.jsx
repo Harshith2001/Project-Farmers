@@ -11,9 +11,9 @@ export default class SignUp extends Component {
 					<input placeholder="Enter Email Address" type="text" />
 					<input placeholder="Your Password" type="password" />
 					<input id="terms" type="checkbox" />
-					<button>Register</button>
+					<button type="submit">Register</button>
 					<div className="align">
-						Have an account? <a href="/home">Login Here</a>
+						Have an account? <a href="/">Login Here</a>
 					</div>
 				</div>
 			</form>

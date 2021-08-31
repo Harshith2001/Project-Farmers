@@ -29,7 +29,12 @@ export default class dash extends Component {
 								<span className="links_name">Orders</span>
 							</a>
 						</li>
-
+						<li>
+							<a href="/trans">
+								<i className="bx bx-box"></i>
+								<span className="links_name">Transaction</span>
+							</a>
+						</li>
 						<li className="log_out">
 							<a href="/">
 								<i class="bx bx-log-out"></i>
@@ -45,15 +50,10 @@ export default class dash extends Component {
 							<i class="bx bx-menu sidebarBtn"></i>
 							<span className="dashboard">DASHBOARD</span>
 						</div>
-						{/* <div className="search-box">
-        <input type="text" placeholder="Search..."/>
-        <i class='bx bx-search' ></i>
-      </div> */}
-						{/* <div className="profile-details">
-        <!--<img src="images/profile.jpg" alt="">-->
-        <span className="admin_name">Prem Shahi</span>
-        <i class='bx bx-chevron-down'><i/>
-      </div> */}
+						<div className="search-box">
+							<input type="text" placeholder="Search..." />
+							<i class="bx bx-search"></i>
+						</div>
 					</nav>
 				</section>
 			</form>
