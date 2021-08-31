@@ -8,7 +8,7 @@ export default class Profile extends Component {
 					<nav>
 						<ul>
 							<li>
-								<a href="/dashboard">Home</a>
+								<a href="/profile/dashboard">Home</a>
 							</li>
 							<li>
 								<a href="/profile">View Profile</a>

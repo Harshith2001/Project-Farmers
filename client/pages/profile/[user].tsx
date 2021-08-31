@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import React from "react";
-import Profile from "../components/profile" 
+import Profile from "../../components/profile" 
 import Head from "next/head";
 const Home: NextPage = () => {
     return (

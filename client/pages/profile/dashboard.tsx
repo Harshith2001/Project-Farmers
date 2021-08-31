@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import React from "react";
 
-import Dashboard from "../components/dashboard";
+import Dashboard from "../../components/dashboard";
 const Home: NextPage = () => {
 	return (
 		<>

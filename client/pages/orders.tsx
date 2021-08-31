@@ -4,7 +4,6 @@ import React from "react";
 
 import data from "../components/data";
 
-
 const Home: NextPage = () => {
 	return (
 		<>
@@ -28,7 +27,7 @@ const Home: NextPage = () => {
 					<nav>
 						<ul>
 							<li>
-								<a href="/dashboard">Home</a>
+								<a href="/profile/dashboard">Home</a>
 							</li>
 							<li>
 								<a href="/profile">View Profile</a>
