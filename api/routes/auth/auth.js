@@ -1,5 +1,5 @@
 import { Router } from "express";
-import database from "../util/database.js";
+import database from "../../util/database.js";
 
 // Route - "/auth/"
 const router = Router();
@@ -43,27 +43,36 @@ router.get("/login", (req, res) => {
 // Route - "/auth/signup"
 // sign up the user
 router.post("/signup", (req, res) => {
-	var auth_user = {
-		userId: req.body.userId,
-		password: req.body.password,
-	};
-	var newUser = {
-		name: req.body.name,
-		userId: req.body.id,
-		userType: req.body.userType,
-		dateCreated: new Date(),
-	};
-	authData.data.push(auth_user);
-	userData.data.push(newUser);
+	// check if userId and password are in body
+	if (!req.body.userId && !req.body.password) {
+		// if not, send error
+		res.json({
+			success: false,
+			message: "UserId and password are required",
+		});
+	} else {
+		var auth_user = {
+			userId: req.body.userId,
+			password: req.body.password,
+		};
+		var newUser = {
+			name: req.body.name,
+			userId: req.body.userId,
+			userType: req.body.userType,
+			dateCreated: new Date(),
+		};
+		authData.data.push(auth_user);
+		userData.data.push(newUser);
 
-	authDb.write(authData);
-	userDb.write(userData);
+		authDb.write(authData);
+		userDb.write(userData);
 
-	req.session.userId = auth_user.userId;
-	res.json({
-		success: true,
-		userId: auth_user.userId,
-	});
+		req.session.userId = auth_user.userId;
+		res.json({
+			success: true,
+			userId: auth_user.userId,
+		});
+	}
 });
 
 // Route - "/auth/logout"
