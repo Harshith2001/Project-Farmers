@@ -6,9 +6,7 @@
 			"name": "Chanakya",
 			"email": "ucs@gmail.com",
 			"mobile": "7894561230",
-			"city": "Mysore",
-			"products": ["f539f658-713a-43dc-a7a1-09988f08b504"],
-			"orders": []
+			"city": "Mysore"
 		},
 		{
 			"userId": "kitty125",
@@ -16,8 +14,7 @@
 			"name": "Zod",
 			"email": "generalzod@gmail.com",
 			"mobile": "7894561239",
-			"city": "Banglore",
-			"orders": []
+			"city": "Banglore"
 		}
 	]
 }
