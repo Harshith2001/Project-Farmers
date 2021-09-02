@@ -13,10 +13,7 @@ const Home: NextPage = () => {
 				<link rel="icon" href="/favicon.ico" />
 				<link rel="stylesheet" href="/styles/login.css" />
 			</Head>
-
-			<main className={styles.main}>
-				<Login />
-			</main>
+			<Login />
 		</div>
 	);
 };

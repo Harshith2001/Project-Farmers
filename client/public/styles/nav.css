@@ -1,11 +1,8 @@
 * {
-    margin: 0;
-    padding: 0;
     font-family: verdana;
 }
 #abc {
     width: 100%;
-
     background-size: cover;
 }
 nav {
