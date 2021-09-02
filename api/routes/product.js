@@ -3,6 +3,18 @@ import database from "../util/database.js";
 import crypto from "crypto";
 
 const router = Router();
+
+router.use((req, res, next) => {
+	if (req.session.userId) {
+		next();
+	} else {
+		res.json({
+			success: false,
+			message: "You are not authenticated",
+		});
+	}
+});
+
 const productDb = new database("./databases/product.json");
 const productDbData = productDb.read();
 // Get all products

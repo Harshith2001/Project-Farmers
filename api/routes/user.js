@@ -5,6 +5,19 @@ import database from "../util/database.js";
 
 // Routes - "/api/user/"
 const router = Router();
+
+// if only, the user is authenticated, then the user can access the route
+router.use((req, res, next) => {
+	if (req.session.userId) {
+		next();
+	} else {
+		res.json({
+			success: false,
+			message: "You are not authenticated",
+		});
+	}
+});
+
 const profileDb = new database("./databases/profile.json");
 const dbData = profileDb.read();
 router.get("/", (req, res) => {
