@@ -38,7 +38,7 @@ router.post("/", (req, res) => {
 	};
 	productDbData.data.push(product);
 	productDb.write(productDbData);
-	res.status(201).json(productDb);
+	res.status(201).json({ success: true, data: product });
 });
 
 // For getting all the products of a particular user

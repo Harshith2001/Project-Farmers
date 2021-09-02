@@ -10,7 +10,7 @@ let userData = userDb.read();
 let authData = authDb.read();
 
 // Route - "/auth/login"
-router.get("/login", (req, res) => {
+router.post("/login", (req, res) => {
 	// get body which has userId and password
 	const { userId, password } = req.body;
 
