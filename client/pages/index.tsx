@@ -22,6 +22,11 @@ const Home: NextPage = () => {
 						<h2>USER'S LOGIN&rarr;</h2>
 						<p>The customer’s perception is your reality.</p>
 					</a>
+
+					<a href="/home" className={styles.card}>
+						<h2>TRANSPORTATION&rarr;</h2>
+						<p>......</p>
+					</a>
 				</div>
 			</main>
 		</div>
