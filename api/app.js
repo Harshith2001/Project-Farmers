@@ -14,10 +14,11 @@ app.use(
 	})
 );
 app.use(session({
-	secret: "secret",
-	resave: false,
-	saveUninitialized: false,
+	secret: "superdupersecret",
+	resave: true,
+	saveUninitialized: true,
 	cookie: {
+		domain: "localhost",
 		maxAge: 1000 * 60 * 60 * 24 * 7,
 	},
 }));

@@ -20,6 +20,7 @@ router.post("/login", (req, res) => {
 		if (authData.data.find((users) => users.userId === userId).password === password) {
 			// if correct, send userId
 			req.session.userId = userId;
+			req.session.save();
 			res.json({
 				success: true,
 				userId: userId,
