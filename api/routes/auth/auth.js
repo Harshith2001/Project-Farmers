@@ -1,6 +1,7 @@
 import { Router } from "express";
 import database from "../../util/database.js";
 
+// Github Copilot
 // Route - "/auth/"
 const router = Router();
 
