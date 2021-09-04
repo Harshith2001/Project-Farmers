@@ -1,1 +1,11 @@
-{"data":[{"productId":"f539f658-713a-43dc-a7a1-09988f08b504","userId":"kitty123","cropName":"Tomato","quantity":100,"price":"10"}]}
+{
+	"data": [
+		{
+			"productId": "f539f658-713a-43dc-a7a1-09988f08b504",
+			"userId": "kitty123",
+			"cropName": "Tomato",
+			"quantity": 100,
+			"price": "10"
+		}
+	]
+}

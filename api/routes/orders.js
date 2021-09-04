@@ -28,6 +28,7 @@ router.post("/", (req, res) => {
 		productId: req.body.productId,
 		cropName: req.body.cropName,
 		quantity: req.body.quantity,
+		price: req.body.price,
 	};
 	let a;
 	for (let i = 0; i < productDbData.data.length; i++) {

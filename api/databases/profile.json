@@ -6,7 +6,8 @@
 			"name": "Chanakya",
 			"email": "ucs@gmail.com",
 			"mobile": "7894561230",
-			"city": "Mysore"
+			"city": "Mysore",
+			"location": ["12.2958", "76.6394"]
 		},
 		{
 			"userId": "kitty125",
@@ -14,7 +15,8 @@
 			"name": "Zod",
 			"email": "generalzod@gmail.com",
 			"mobile": "7894561239",
-			"city": "Banglore"
+			"city": "Banglore",
+			"location": ["12.9716", "77.5946"]
 		}
 	]
 }

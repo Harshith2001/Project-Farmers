@@ -33,6 +33,7 @@ router.post("/", (req, res) => {
 		email: req.body.email,
 		mobile: req.body.mobile,
 		city: req.body.city,
+		location: req.body.location,
 	};
 	dbData.data.push(profile);
 	// console.log(oldData);
