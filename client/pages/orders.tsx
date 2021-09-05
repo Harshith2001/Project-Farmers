@@ -1,8 +1,9 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import React from "react";
+import Link from "next/link";
 
-import data from "../components/data";
+// import data from "../components/data";
 
 const Home: NextPage = () => {
 	return (
@@ -27,7 +28,9 @@ const Home: NextPage = () => {
 					<nav>
 						<ul>
 							<li>
-								<a href="/profile/dashboard">Home</a>
+								<Link href="/profile/dashboard">
+									<a>Dashboard</a>
+								</Link>
 							</li>
 							<li>
 								<a href="/profile">View Profile</a>
@@ -45,7 +48,7 @@ const Home: NextPage = () => {
 					</nav>
 				</div>
 				<div className="orderBox">
-					{data.map((dat) => {
+					{/* {data.map((dat) => {
 						const { img, cropName, price } = dat;
 						return (
 							<div className="order" style={{ marginLeft: 5, marginRight: 5 }}>
@@ -54,7 +57,7 @@ const Home: NextPage = () => {
 								<h4>{price}</h4>
 							</div>
 						);
-					})}
+					})} */}
 				</div>
 			</div>
 		</>

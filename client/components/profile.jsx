@@ -6,7 +6,7 @@ export default class Profile extends Component {
 		let { user } = this.props;
 		return (
 			<div>
-				<NavBar />
+				<NavBar userData={user} />
 				{/* <div id="abc">
 					<nav>
 						<ul>

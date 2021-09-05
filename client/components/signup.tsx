@@ -14,6 +14,8 @@ export default class SignUp extends Component {
 	}
 
 	formSubmit() {
+		let userType = this.userType.current?.checked ? "farmer" : "end-user";
+
 		let req = {
 			method: "POST",
 			headers: {
@@ -23,10 +25,11 @@ export default class SignUp extends Component {
 				userId: this.userId.current?.value,
 				password: this.password.current?.value,
 				name: this.name.current?.value,
-				userType: this.userType.current?.value,
+				userType: userType,
 				email: this.email.current?.value,
 			}),
 		};
+
 		fetch(process.env.API_URL + "/auth/signup", req)
 			.then((res) => res.json())
 			.then((res) => {
