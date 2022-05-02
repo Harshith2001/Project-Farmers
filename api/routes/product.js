@@ -1,6 +1,5 @@
 import { Router } from "express";
 import database from "../util/database.js";
-import crypto from "crypto";
 
 const router = Router();
 
