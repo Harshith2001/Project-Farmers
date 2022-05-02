@@ -2,7 +2,7 @@
 
 import { Router } from "express";
 import { exit } from "process";
-import userModel from "../schemas/userModel.js";
+import userModel from "../models/userModel.js";
 // Routes - "/api/user/"
 const router = Router();
 // if only, the user is authenticated, then the user can access the route
