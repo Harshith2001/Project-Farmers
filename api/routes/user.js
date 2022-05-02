@@ -1,7 +1,7 @@
 /// <reference types="express"/>
 
 import { Router } from "express";
-import database from "../util/database.js";
+import { exit } from "process";
 import userModel from "../schemas/userModel.js";
 // Routes - "/api/user/"
 const router = Router();
@@ -17,34 +17,53 @@ const router = Router();
 // 	}
 // });
 
-const profileDb = new database("./databases/profile.json");
-const dbData = profileDb.read();
+
+// For testing purpose only should be removed during deployment
 router.get("/", (req, res) => {
-	userModel.find({}).then((data) => res.send(data));
+	userModel.find({}).then((data) => res.json(data));
 });
 
-//Post Methods
-router.post("/", (req, res) => {
-	const profile = {
-		userId: req.body.userId,
-		userType: req.body.userType,
-		name: req.body.name,
-		email: req.body.email,
-		mobile: req.body.mobile,
-		city: req.body.city,
-		location: req.body.location,
-	};
-	dbData.data.push(profile);
-	// console.log(oldData);
-	profileDb.write(dbData);
-	res.status(201).json(profileDb);
+//Post Method
+router.post("/", async(req, res) => {
+	let err = 0;
+	//Have to add constraints to check if the username or email or mobile is already present
+	await userModel.find({userId: req.body.userId}).then((data) => {
+		if (data.length > 0) {
+			err=1;
+		}
+	});
+	await userModel.find({email: req.body.email}).then((data) => {
+		if (data.length > 0) {
+			err =2;
+		}});
+	await userModel.find({mobile: req.body.mobile}).then((data) => {
+		if (data.length > 0) {
+			err =3;
+		}});
+	let profile = new userModel(req.body);
+	if (err == 1) {
+		res.json({
+			success: false,
+			message: "User Id already exists",
+		});
+	} else if (err == 2) {
+		res.json({
+			success: false,
+			message: "Email already exists",
+		});
+	} else if (err == 3) {
+		res.json({
+			success: false,
+			message: "Mobile already exists",
+		});
+	} else {
+	await profile.save();
+	res.status(201).json(profile);}
 });
 
-// route for get api is /api/profile/id
+// route for get api is /api/user/id
 router.get("/:id", (req, res) => {
-	//let a = dbData.data.find((user) => user.userId === req.params.id);
-	let a= userModel.find({userId: req.params.id});
-	res.render(a);
+	userModel.find({userId: req.params.id}).then((data) => res.json(data));
 });
 
 export default router;
