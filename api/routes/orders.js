@@ -8,12 +8,20 @@ const objectId = ObjectId;
 // Irrespective of user type this api will return orders made by the user for the faster data retrievel to filed such as fUserId and eUserId are used.
 // fuserid or euserid or order id is used to retrieve the orders.
 router.get("/:id", (req, res) => {
+	if(req.params.id.length == 24){
+
+		orderModel.find({$or:[
+			{fUserId: req.params.id},
+			{eUserId: req.params.id},
+			{_id:new objectId(req.params.id)}
+	]}).then((data) => res.json(data));
+}
+else{
 	orderModel.find({$or:[
 		{fUserId: req.params.id},
-		{eUserId: req.params.id},
-		//{_id:new objectId(req.params.id)}
+		{eUserId: req.params.id}
 	]}).then((data) => res.json(data));
-});
+}});
 
 router.post("/", async(req, res) => {
 	
