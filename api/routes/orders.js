@@ -1,15 +1,10 @@
 import { Router } from "express";
-import database from "../util/database.js";
-import crypto from "crypto";
+import productModel from "../models/productModel.js";
+import orderModel from "../models/orderModel.js";
 
 const router = Router();
-const ordersDb = new database("./databases/orders.json");
-const productDb = new database("./databases/product.json");
-const productDbData = productDb.read();
-const ordersDbData = ordersDb.read();
-
 // Irrespective of user type this api will return orders made by the user for the faster data retrievel to filed such as fUserId and eUserId are used.
-
+// fuserid or euserid or order id is used to retrieve the orders.
 router.get("/:id", (req, res) => {
 	const orders = [];
 	for (let i = 0; i < ordersDbData.data.length; i++) {
@@ -22,11 +17,9 @@ router.get("/:id", (req, res) => {
 
 router.post("/", (req, res) => {
 	const order = {
-		orderId: crypto.randomUUID(),
 		fUserId: req.body.fUserId,
 		eUserId: req.body.eUserId,
 		productId: req.body.productId,
-		cropName: req.body.cropName,
 		quantity: req.body.quantity,
 		price: req.body.price,
 	};
