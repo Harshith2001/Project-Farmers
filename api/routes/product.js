@@ -37,4 +37,9 @@ router.delete("/:id", (req, res) => {
 	productModel.findByIdAndRemove(req.params.id).then((data) => res.json(data));
 });
 
+router.put("/:id", (req, res) => {
+	productModel.findByIdAndUpdate(req.params.id, req.body).then(res.status(201).json({ success: true}));
+}
+);
+
 export default router;

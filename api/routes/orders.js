@@ -2,6 +2,7 @@ import { Router } from "express";
 import productModel from "../models/productModel.js";
 import orderModel from "../models/orderModel.js";
 import { ObjectId } from "mongodb";
+import axios from "axios";
 
 const router = Router();
 const objectId = ObjectId;
@@ -34,7 +35,8 @@ router.post("/", async(req, res) => {
 		});
 	} else {
 		let order = new orderModel(req.body);
-		order.save();
+		await order.save();
+		await axios.put(`http://localhost:3100/api/product/${req.body.productId}`, {availableQuantity: availableQuantity - req.body.quantity});
 		res.status(201).json({ success: true, data: order });
 	}
 	//have to update the available quantity of the product in product model.

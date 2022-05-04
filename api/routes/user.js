@@ -66,4 +66,7 @@ router.get("/:id", (req, res) => {
 	userModel.find({userId: req.params.id}).then((data) => res.json(data));
 });
 
+router.put("/:id", (req, res) => {
+	userModel.findOneAndUpdate({userId: req.params.id}, req.body).then(res.status(201).json({ success: true}));
+});
 export default router;
