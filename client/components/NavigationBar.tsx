@@ -1,4 +1,3 @@
-import { Button, Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 
@@ -34,9 +33,9 @@ export default class NavBar extends React.Component {
 				<h1>Project Farmers</h1>
 				<div className="nav_links">
 					<div id="nav_profile">
-						<Button variant="contained" color="secondary">
+						<button color="secondary">
 							Profile
-						</Button>
+						</button>
 					</div>
 				</div>
 			</Nav>
