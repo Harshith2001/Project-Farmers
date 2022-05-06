@@ -14,10 +14,10 @@ type user = {
 
 const Home = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	let content;
-	if (data == null) {
+	if (data.length == 0) {
 		content = <div>User not found</div>;
 	} else {
-		content = <Profile user={data} />;
+		content = <Profile user={data[0]} />;
 	}
 
 	return (
@@ -44,7 +44,7 @@ const Home = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) 
 export const getServerSideProps = async (context: any) => {
 	// let router = useRouter();
 	// Fetch data from external API
-	let data: user = null;
+	let data;
 	try {
 		const res = await fetch(process.env.API_URL + "/api/user/" + context.params.user);
 		data = await res.json();
