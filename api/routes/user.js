@@ -3,23 +3,16 @@
 import { Router } from "express";
 import { exit } from "process";
 import userModel from "../models/userModel.js";
+import credentialModel from "../models/credentialModel.js";
+import {hashSync} from "bcrypt";
+import passport from "passport";
+import myPassport from "../util/passport.js";
+
 // Routes - "/api/user/"
 const router = Router();
-// if only, the user is authenticated, then the user can access the route
-// router.use((req, res, next) => {
-// 	if (req.session.userId) {
-// 		next();
-// 	} else {
-// 		res.json({
-// 			success: false,
-// 			message: "You are not authenticated",
-// 		});
-// 	}
-// });
-
-
+router.use(passport.initialize());
 // For testing purpose only should be removed during deployment
-router.get("/", (req, res) => {
+router.get("/", passport.authenticate('jwt',{session:false}),(req, res) => {
 	userModel.find({}).then((data) => res.json(data));
 });
 
@@ -40,7 +33,19 @@ router.post("/", async(req, res) => {
 		if (data.length > 0) {
 			err =3;
 		}});
-	let profile = new userModel(req.body);
+	let profile = new userModel({
+		userId: req.body.userId,
+		userType: req.body.userType,
+		name: req.body.name,
+		email: req.body.email,
+		mobile: req.body.mobile,
+		city: req.body.city,
+		location: req.body.location,
+	});
+	let credentials = new credentialModel({
+		userId: req.body.userId,
+		password: hashSync(req.body.password, 10),
+	});
 	if (err == 1) {
 		res.json({
 			success: false,
@@ -58,6 +63,7 @@ router.post("/", async(req, res) => {
 		});
 	} else {
 	await profile.save();
+	await credentials.save();
 	res.status(201).json(profile);}
 });
 
