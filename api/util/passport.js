@@ -11,6 +11,7 @@ const myPassport= passport.use(new Strategy(opts, function(jwt_payload, done) {
             return done(err, false);
         }
         if (user) {
+            myPassport.id = jwt_payload.userId;
             return done(null, user);
         } else {
             return done(null, false);
