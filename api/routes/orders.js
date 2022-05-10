@@ -37,20 +37,6 @@ router.post("/", async (req, res) => {
 			userId: "admin",
 			password: "Pupa@123",
 		});
-		// await axios
-		// 	.put(
-		// 		`http://localhost:3100/api/product/admin/${req.body.productId}`,
-		// 		{ availableQuantity: availableQuantity - req.body.quantity, admin: true },
-		// 		{
-		// 			headers: {
-		// 				"Authorization": credentials.data.token,
-		// 				"content-type": "text/json",
-		// 			},
-		// 		}
-		// 	)
-		// 	.catch((err) => {
-		// 		console.log(err);
-		// 	});
 		await fetch(`http://localhost:3100/api/product/admin/${req.body.productId}`, {
 			method: "PUT",
 			body: JSON.stringify({
