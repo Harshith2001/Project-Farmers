@@ -1,0 +1,9 @@
+{
+  "editor.fontLigatures": true,
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "workbench.colorTheme": "Plastic",
+
+  "files.autoSave": "afterDelay"
+}
