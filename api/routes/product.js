@@ -7,29 +7,35 @@ const router = Router();
 router.use(myPassport.initialize());
 
 const isAuthorized = async (req, res, next) => {
-	await userModel.find({ userId: myPassport.id }).then(async (user) => {
-		let myProduct;
-		await productModel.findById(req.params.id).then((product) => {
-			myProduct = product;
-		});
-		if (user[0].userId !== myProduct.userId) {
+	await userModel
+		.find({ userId: myPassport.id })
+		.then(async (user) => {
+			let myProduct;
+			await productModel.findById(req.params.id).then((product) => {
+				myProduct = product;
+			});
+			if (user[0].userId !== myProduct.userId) {
+				return res.status(403).send("Forbidden");
+			}
+			next();
+		})
+		.catch((err) => {
 			return res.status(403).send("Forbidden");
-		}
-		next();
-	}).catch((err) => {
-		return res.status(403).send("Forbidden");
-	});
+		});
 };
 
 const isAllowed = async (req, res, next) => {
-	await userModel.find({ userId: myPassport.id }).then((user) => {
-		if (user[0].userId !== req.body.userId || user[0].userType !== "farmer") {
+	await userModel
+		.find({ userId: myPassport.id })
+		.then((user) => {
+			if (user[0].userId !== req.body.userId || user[0].userType !== "farmer") {
+				return res.status(403).send("Forbidden");
+			}
+			next();
+		})
+		.catch((err) => {
 			return res.status(403).send("Forbidden");
-		}
-		next();
-	}).catch((err) => {
-		return res.status(403).send("Forbidden");
-	});
+		});
 };
 
 // Get all products
@@ -58,4 +64,7 @@ router.put("/:id", myPassport.authenticate("jwt", { session: false }), isAuthori
 	productModel.findByIdAndUpdate(req.params.id, req.body).then(res.status(201).json({ success: true }));
 });
 
+router.put("/admin/:id",myPassport.authenticate("jwt", { session: false }), (req, res) => {
+	productModel.findByIdAndUpdate(req.params.id, req.body).then(res.status(201).json({ success: true }));
+});
 export default router;
