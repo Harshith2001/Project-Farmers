@@ -31,6 +31,15 @@ const isAuthorized = async (req, res, next) => {
 	}
 };
 
+const isAllowed = async (req, res, next) => {
+	await userModel.find({ userId: myPassport.id }).then((user) => {
+		if (req.body.eUserId !== user[0].userId) {
+			return res.status(403).send("Forbidden");
+		}
+		next();
+	});
+};
+
 // Irrespective of user type this api will return orders made by the user for the faster data retrievel to filed such as fUserId and eUserId are used.
 // fuserid or euserid or order id is used to retrieve the orders.
 router.get("/:id", myPassport.authenticate("jwt", { session: false }), isAuthorized, (req, res) => {
@@ -49,7 +58,7 @@ router.get("/:id", myPassport.authenticate("jwt", { session: false }), isAuthori
 	}
 });
 
-router.post("/", async (req, res) => {
+router.post("/", myPassport.authenticate("jwt", { session: false }), isAllowed, async (req, res) => {
 	let availableQuantity;
 	await productModel.findById(req.body.productId).then((data) => (availableQuantity = data.availableQuantity));
 	if (availableQuantity < req.body.quantity) {
