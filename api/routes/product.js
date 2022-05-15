@@ -63,8 +63,4 @@ router.delete("/:id", myPassport.authenticate("jwt", { session: false }), isAuth
 router.put("/:id", myPassport.authenticate("jwt", { session: false }), isAuthorized, (req, res) => {
 	productModel.findByIdAndUpdate(req.params.id, req.body).then(res.status(201).json({ success: true }));
 });
-
-router.put("/admin/:id",myPassport.authenticate("jwt", { session: false }), (req, res) => {
-	productModel.findByIdAndUpdate(req.params.id, req.body).then(res.status(201).json({ success: true }));
-});
 export default router;
