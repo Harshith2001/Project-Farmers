@@ -4,6 +4,12 @@ import orderModel from "../models/orderModel.js";
 import { ObjectId } from "mongodb";
 import myPassport from "../util/passport.js";
 import userModel from "../models/userModel.js";
+import priceModel from "../models/priceModel.js";
+import database from "../util/database.js";
+import priceAlgorithm from "../util/PriceV2.js";
+
+const demandDb = new database("./databases/demand.json");
+const demandDbData = demandDb.read();
 
 const router = Router();
 const objectId = ObjectId;
@@ -59,17 +65,55 @@ router.get("/:id", myPassport.authenticate("jwt", { session: false }), isAuthori
 });
 
 router.post("/", myPassport.authenticate("jwt", { session: false }), isAllowed, async (req, res) => {
-	let availableQuantity;
-	await productModel.findById(req.body.productId).then((data) => (availableQuantity = data.availableQuantity));
-	if (availableQuantity < req.body.quantity) {
+	let product = {};
+	await productModel.findById(req.body.productId).then((data) => (product = data));
+	priceAlgorithm.priceCalculator(product.cropName);
+	if (product.availableQuantity < req.body.quantity) {
 		res.json({
 			success: false,
 			message: "Required quantity is less than available quantity",
 		});
 	} else {
-		let order = new orderModel(req.body);
+		if (product.cropName in demandDbData) {
+			let demandObject = demandDbData[`${product.cropName}`][0];
+			if (`${req.body.bidValue}` in demandObject) {
+				demandObject[`${req.body.bidValue}`] += req.body.quantity;
+			} else {
+				demandObject[`${req.body.bidValue}`] = req.body.quantity;
+			}
+			demandDbData[`${product.cropName}`][0] = demandObject;
+			demandDbData[`${product.cropName}`][1] += req.body.quantity;
+		} else {
+			demandDbData[`${product.cropName}`] = [];
+			demandDbData[`${product.cropName}`][0] = {
+				[`${req.body.bidValue}`]: req.body.quantity,
+			};
+			demandDbData[`${product.cropName}`][1] = req.body.quantity;
+		}
+		demandDb.write(demandDbData);
+		if (demandDbData[`${product.cropName}`][1] >= 1000 || demandDbData[`${product.cropName}`][2] >= 5000) {
+			const price = new priceAlgorithm(product.cropName, demandDbData[`${product.cropName}`][0]);
+			let newPrice = price.priceCalculator();
+			await priceModel.findOneAndUpdate({ cropName: product.cropName }, { price: newPrice });
+
+			if (demandDbData[`${product.cropName}`][2] >= 5000) {
+				demandDbData[`${product.cropName}`][2] = 0;
+			} else {
+				demandDbData[`${product.cropName}`][0] = {};
+				demandDbData[`${product.cropName}`][1] = 0;
+			}
+			demandDb.write(demandDbData);
+		}
+
+		let order = new orderModel({
+			fUserId: req.body.fUserId,
+			eUserId: req.body.eUserId,
+			productId: req.body.productId,
+			quantity: req.body.quantity,
+			price: req.body.price,
+		});
 		await productModel.findByIdAndUpdate(req.body.productId, {
-			availableQuantity: availableQuantity - req.body.quantity,
+			availableQuantity: product.availableQuantity - req.body.quantity,
 		});
 		await order.save();
 		res.status(201).json({ success: true, data: order });

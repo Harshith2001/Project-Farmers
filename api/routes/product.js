@@ -2,6 +2,10 @@ import { Router } from "express";
 import productModel from "../models/productModel.js";
 import myPassport from "../util/passport.js";
 import userModel from "../models/userModel.js";
+import database from "../util/database.js";
+
+const demandDb = new database("./databases/demand.json");
+const demandDbData = demandDb.read();
 
 const router = Router();
 router.use(myPassport.initialize());
@@ -45,6 +49,8 @@ router.get("/", (req, res) => {
 
 router.post("/", myPassport.authenticate("jwt", { session: false }), isAllowed, (req, res) => {
 	let product = new productModel(req.body);
+	demandDbData[`${req.body.cropName}`][2] += req.body.quantity;
+	demandDb.write(demandDbData);
 	product.save();
 	res.status(201).json({ success: true, data: product });
 });
