@@ -94,7 +94,7 @@ router.post("/", myPassport.authenticate("jwt", { session: false }), isAllowed, 
 		if (demandDbData[`${product.cropName}`][1] >= 1000 || demandDbData[`${product.cropName}`][2] >= 5000) {
 			const price = new priceAlgorithm(product.cropName, demandDbData[`${product.cropName}`][0]);
 			let newPrice = price.priceCalculator();
-			await priceModel.findOneAndUpdate({ cropName: product.cropName }, { price: newPrice });
+			await priceModel.findOneAndUpdate({ cropName: product.cropName }, { $set: { price: newPrice } });
 
 			if (demandDbData[`${product.cropName}`][2] >= 5000) {
 				demandDbData[`${product.cropName}`][2] = 0;

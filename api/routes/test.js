@@ -1,16 +1,14 @@
-import priceAlgorithm from "../util/PriceV2.js";
 import { Router } from "express";
-import database from "../util/database.js";
-
-const demandDb = new database("./databases/demand.json");
-const demandDbData = demandDb.read();
-
+import priceModel from "../models/priceModel.js";
 const router = Router();
 
 router.get("/", (req, res) => {
-	const price = new priceAlgorithm("Tomato", demandDbData["Tomato"][0]);
-	price.priceCalculator();
-	res.send("Hello");
+	res.json("Hello World");
+});
+
+router.post("/", (req, res) => {
+	let price = new priceModel(req.body);
+	price.save().then((data) => res.json(data));
 });
 
 export default router;

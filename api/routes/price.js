@@ -1,5 +1,5 @@
 import { Router } from "express";
-import priceModel from "../models/priceModel";
+import priceModel from "../models/priceModel.js";
 
 const router = Router();
 router.get("/:id", async (req, res) => {
