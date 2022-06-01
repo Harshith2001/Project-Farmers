@@ -16,12 +16,11 @@ class priceAlgorithm {
 		});
 		for (let i = 0; i < product.length; i++) {
 			if (product[i].price in supply) {
-				supply[`${product[i].price}`] += product[i].availableQuantity;
+				supply[`${product[i].price}`] += product[i].quantity;
 			} else {
-				supply[`${product[i].price}`] = product[i].availableQuantity;
+				supply[`${product[i].price}`] = product[i].quantity;
 			}
 		}
-
 		//price array
 		const supplyPriceArray = Object.keys(supply);
 		const demandPriceArray = Object.keys(this.demand);
