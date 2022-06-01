@@ -3,7 +3,7 @@ import productModel from "../models/productModel.js";
 import myPassport from "../util/passport.js";
 import userModel from "../models/userModel.js";
 import database from "../util/database.js";
-import priceAlgorithm from "../util/PriceV2.js";
+import priceAlgorithm from "../util/priceAlgorithm.js";
 import priceModel from "../models/priceModel.js";
 
 const demandDb = new database("./databases/demand.json");

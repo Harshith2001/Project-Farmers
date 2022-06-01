@@ -6,7 +6,7 @@ import myPassport from "../util/passport.js";
 import userModel from "../models/userModel.js";
 import priceModel from "../models/priceModel.js";
 import database from "../util/database.js";
-import priceAlgorithm from "../util/PriceV2.js";
+import priceAlgorithm from "../util/priceAlgorithm.js";
 
 const demandDb = new database("./databases/demand.json");
 const demandDbData = demandDb.read();
