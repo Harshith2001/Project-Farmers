@@ -3,6 +3,8 @@ import productModel from "../models/productModel.js";
 import myPassport from "../util/passport.js";
 import userModel from "../models/userModel.js";
 import database from "../util/database.js";
+import priceAlgorithm from "../util/PriceV2.js";
+import priceModel from "../models/priceModel.js";
 
 const demandDb = new database("./databases/demand.json");
 const demandDbData = demandDb.read();
@@ -47,11 +49,19 @@ router.get("/", (req, res) => {
 	productModel.find({ availableQuantity: { $gt: 0 } }).then((data) => res.json(data));
 });
 
-router.post("/", myPassport.authenticate("jwt", { session: false }), isAllowed, (req, res) => {
+router.post("/", myPassport.authenticate("jwt", { session: false }), isAllowed, async (req, res) => {
 	let product = new productModel(req.body);
 	demandDbData[`${req.body.cropName}`][2] += req.body.quantity;
 	demandDb.write(demandDbData);
-	product.save();
+
+	if (demandDbData[`${req.body.cropName}`][2] >= 2000) {
+		const price = new priceAlgorithm(req.body.cropName, demandDbData[`${req.body.cropName}`][0]);
+		let newPrice = price.priceCalculator();
+		await priceModel.findOneAndUpdate({ cropName: req.body.cropName }, { $set: { price: newPrice } });
+		demandDbData[`${req.body.cropName}`][2] = 0;
+		demandDb.write(demandDbData);
+	}
+	await product.save();
 	res.status(201).json({ success: true, data: product });
 });
 
