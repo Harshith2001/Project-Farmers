@@ -67,7 +67,6 @@ router.get("/:id", myPassport.authenticate("jwt", { session: false }), isAuthori
 router.post("/", myPassport.authenticate("jwt", { session: false }), isAllowed, async (req, res) => {
 	let product = {};
 	await productModel.findById(req.body.productId).then((data) => (product = data));
-	priceAlgorithm.priceCalculator(product.cropName);
 	if (product.availableQuantity < req.body.quantity) {
 		res.json({
 			success: false,
@@ -91,18 +90,21 @@ router.post("/", myPassport.authenticate("jwt", { session: false }), isAllowed, 
 			demandDbData[`${product.cropName}`][1] = req.body.quantity;
 		}
 		demandDb.write(demandDbData);
+
+		let price = 0;
+
+		await priceModel.findOne({ cropName: product.cropName }).then((data) => {
+			price = data.price * req.body.quantity;
+		});
+
 		if (demandDbData[`${product.cropName}`][1] >= 1000) {
 			const price = new priceAlgorithm(product.cropName, demandDbData[`${product.cropName}`][0]);
-			let newPrice = price.priceCalculator();
+			let newPrice = await price.priceCalculator();
 			await priceModel.findOneAndUpdate({ cropName: product.cropName }, { $set: { price: newPrice } });
 			demandDbData[`${product.cropName}`][0] = {};
 			demandDbData[`${product.cropName}`][1] = 0;
 			demandDb.write(demandDbData);
 		}
-		const price = 0;
-		await priceModel.findOne({ cropName: product.cropName }).then((data) => {
-			price = data.price;
-		});
 		let order = new orderModel({
 			fUserId: req.body.fUserId,
 			eUserId: req.body.eUserId,
@@ -114,6 +116,7 @@ router.post("/", myPassport.authenticate("jwt", { session: false }), isAllowed, 
 			availableQuantity: product.availableQuantity - req.body.quantity,
 		});
 		await order.save();
+
 		res.status(201).json({ success: true, data: order });
 	}
 	//have to update the available quantity of the product in product model.

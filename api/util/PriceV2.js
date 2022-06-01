@@ -63,7 +63,7 @@ class priceAlgorithm {
 			indexArray.push(Math.min(supplyArray[i], demandArray[i]));
 		}
 		var price = priceArray[indexArray.indexOf(Math.max(...indexArray))];
-		console.log(price);
+		return price;
 	}
 }
 
