@@ -5,6 +5,7 @@ import userModel from "../models/userModel.js";
 import database from "../util/database.js";
 import priceAlgorithm from "../util/priceAlgorithm.js";
 import priceModel from "../models/priceModel.js";
+import orderModel from "../models/orderModel.js";
 
 const demandDb = new database("./databases/demand.json");
 const demandDbData = demandDb.read();
@@ -51,9 +52,12 @@ router.get("/", (req, res) => {
 
 router.post("/", myPassport.authenticate("jwt", { session: false }), isAllowed, async (req, res) => {
 	let product = new productModel(req.body);
-	demandDbData[`${req.body.cropName}`][2] += req.body.quantity;
+	if (req.body.cropName in demandDbData) {
+		demandDbData[`${req.body.cropName}`][2] += req.body.quantity;
+	} else {
+		demandDbData[`${req.body.cropName}`] = [{}, 0, req.body.quantity];
+	}
 	demandDb.write(demandDbData);
-
 	if (demandDbData[`${req.body.cropName}`][2] >= 2000) {
 		const price = new priceAlgorithm(req.body.cropName, demandDbData[`${req.body.cropName}`][0]);
 		let newPrice = price.priceCalculator();
@@ -72,8 +76,16 @@ router.get("/:id", (req, res) => {
 
 // Note: This method is written by Github Copilot
 // For deleting the product
-router.delete("/:id", myPassport.authenticate("jwt", { session: false }), isAuthorized, (req, res) => {
-	productModel.findByIdAndRemove(req.params.id).then((data) => res.json(data));
+router.delete("/:id", myPassport.authenticate("jwt", { session: false }), isAuthorized, async (req, res) => {
+	let order;
+	await orderModel.find({ productId: req.params.id }).then((data) => {
+		order = data;
+	});
+	if (order.length > 0) {
+		return res.status(403).send("Can't delete the product already sold");
+	} else {
+		await productModel.findByIdAndRemove(req.params.id).then((data) => res.json(data));
+	}
 });
 
 router.put("/:id", myPassport.authenticate("jwt", { session: false }), isAuthorized, (req, res) => {

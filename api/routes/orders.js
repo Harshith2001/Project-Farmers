@@ -64,16 +64,25 @@ router.get("/:id", myPassport.authenticate("jwt", { session: false }), isAuthori
 	}
 });
 
-router.post("/", myPassport.authenticate("jwt", { session: false }), isAllowed, async (req, res) => {
-	let product = {};
-	await productModel.findById(req.body.productId).then((data) => (product = data));
-	if (product.availableQuantity < req.body.quantity) {
-		res.json({
-			success: false,
-			message: "Required quantity is less than available quantity",
+router.post("/",myPassport.authenticate("jwt", { session: false }),isAllowed,async (req, res) => {
+		let product = {};
+		let dataNotFound = false;
+		await productModel.findById(req.body.productId).then((data) => {
+			if (data != null) {
+				product = data;
+			} else {
+				dataNotFound = true;
+			}
 		});
-	} else {
-		if (product.cropName in demandDbData) {
+		if (dataNotFound) {
+			return res.status(404).send("Product not found");
+		}
+		if (product.availableQuantity < req.body.quantity) {
+			res.json({
+				success: false,
+				message: "Required quantity is less than available quantity",
+			});
+		} else {
 			let demandObject = demandDbData[`${product.cropName}`][0];
 			if (`${req.body.bidValue}` in demandObject) {
 				demandObject[`${req.body.bidValue}`] += req.body.quantity;
@@ -82,14 +91,8 @@ router.post("/", myPassport.authenticate("jwt", { session: false }), isAllowed, 
 			}
 			demandDbData[`${product.cropName}`][0] = demandObject;
 			demandDbData[`${product.cropName}`][1] += req.body.quantity;
-		} else {
-			demandDbData[`${product.cropName}`] = [];
-			demandDbData[`${product.cropName}`][0] = {
-				[`${req.body.bidValue}`]: req.body.quantity,
-			};
-			demandDbData[`${product.cropName}`][1] = req.body.quantity;
+			demandDb.write(demandDbData);
 		}
-		demandDb.write(demandDbData);
 
 		let price = 0;
 
@@ -120,6 +123,6 @@ router.post("/", myPassport.authenticate("jwt", { session: false }), isAllowed, 
 		res.status(201).json({ success: true, data: order });
 	}
 	//have to update the available quantity of the product in product model.
-});
+);
 
 export default router;
