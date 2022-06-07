@@ -44,10 +44,11 @@ export function AuthenticationForm() {
       url = "/auth/login";
     } else {
       body = JSON.stringify({
-        name: form.values.name,
+        userId: form.values.userId,
+        name: form.values.name || `whatever${Math.floor(Math.random() * 100)}`,
         email: form.values.email,
-        mobile: form.values.mobile,
-        userType: form.values.userType,
+        mobile: form.values.mobile || `${Math.floor(Math.random() * 1000000000)}`,
+        userType: form.values.userType || "farmer",
         password: form.values.password,
       });
       url = "/auth/register";
