@@ -34,17 +34,33 @@ export function AuthenticationForm() {
   });
 
   function onSubmit(values: any) {
+    let body, url;
+
+    if (type === "Login") {
+      body = JSON.stringify({
+        userId: form.values.userId,
+        password: form.values.password,
+      });
+      url = "/auth/login";
+    } else {
+      body = JSON.stringify({
+        name: form.values.name,
+        email: form.values.email,
+        mobile: form.values.mobile,
+        userType: form.values.userType,
+        password: form.values.password,
+      });
+      url = "/auth/register";
+    }
+
     let req = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        userId: form.values.userId,
-        password: form.values.password,
-      }),
+      body: body,
     };
-    fetch(process.env.API_URL + "/auth/login", req)
+    fetch(process.env.API_URL + url, req)
       .then((x) => x.json())
       .then((x) => {
         console.log(x);

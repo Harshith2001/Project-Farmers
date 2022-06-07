@@ -1,8 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import React from "react";
-import { AuthenticationForm } from "../components/AuthenticationForm";
-import Login from "../components/login";
+import { AuthenticationForm } from "../components";
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
