@@ -3,9 +3,9 @@ import priceModel from "../models/priceModel.js";
 
 const router = Router();
 router.get("/:id", async (req, res) => {
-	let price = {};
-	await priceModel.find({ cropName: req.params.id }).then((data) => (price = data));
-	res.status(200).json(price);
+  let price = {};
+  await priceModel.find({ cropName: req.params.id }).then((data) => (price = data));
+  res.status(200).json(price);
 });
 
 export default router;
