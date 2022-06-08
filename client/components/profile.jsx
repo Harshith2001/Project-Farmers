@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import NavBar from "./NavigationBar";
+import NavBar from "./NavHeader";
 
 export default class Profile extends Component {
 	render() {

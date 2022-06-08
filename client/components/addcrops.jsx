@@ -1,6 +1,6 @@
 import React from "react";
 import { Form, Field } from "@leveluptuts/fresh";
-import NavBar from "./NavigationBar";
+import NavBar from "./NavHeader";
 
 const onSubmit = (data) => console.log(data);
 export default function Orders() {
