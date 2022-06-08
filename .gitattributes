@@ -1,2 +1,2 @@
-archive/** linguist-vendored
-archive/** -linguist-detectable
+client/archive/** linguist-vendored
+client/archive/** -linguist-detectable
