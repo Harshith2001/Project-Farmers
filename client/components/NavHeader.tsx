@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import { createStyles, Header, Menu, Group, Center, Burger, Container, Title } from "@mantine/core";
+import Link from "next/link";
+import UserContext, { UserContextType } from "../lib/UserContext";
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -33,22 +35,33 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
+enum UserTypes {
+  farmer = "farmer",
+  endUser = "end-user",
+  public = "public", //only to non logged
+  both = "both",
+  all = "all",
+}
+
 interface HeaderSearchProps {
   links: {
     link: string;
     label: string;
+    show: UserTypes;
   }[];
 }
 
 export default function HeaderMenuColored() {
   const { classes } = useStyles();
+  const data = useContext(UserContext) as UserContextType;
 
   let links: HeaderSearchProps["links"] = [
-    { link: "/profile/dashboard", label: "Home" },
-    { link: "/profile", label: "Profile" },
-    { link: "/addcrops", label: "Add crops" },
-    { link: "/orders", label: "Orders" },
-    { link: "/", label: "Logout" },
+    { link: "/browse", label: "Browse", show: UserTypes.all },
+    { link: `/profile/${data.userId}`, label: "Profile", show: UserTypes.both },
+    { link: "/addcrops", label: "Add crops", show: UserTypes.both },
+    { link: "/orders", label: "Orders", show: UserTypes.both },
+    { link: ".", label: "Logout", show: UserTypes.both },
+    { link: "/", label: "Login", show: UserTypes.public },
   ];
 
   return (
@@ -57,11 +70,14 @@ export default function HeaderMenuColored() {
         <div className={classes.inner}>
           <Title>Project Farmers</Title>
           <Group spacing={5}>
-            {links.map((link) => (
-              <a key={link.label} href={link.link} className={classes.link}>
-                {link.label}
-              </a>
-            ))}
+            {links.map((link) => {
+              let userLoggedIn = data.userType === "farmer" || data.userType === "end-user";
+              return (
+                <Link href={link.link} key={link.label}>
+                  <a className={classes.link}>{link.label}</a>
+                </Link>
+              );
+            })}
           </Group>
         </div>
       </Container>
