@@ -5,6 +5,6 @@ export type UserContextType = {
   userType: "farmer" | "end-user";
 };
 
-const UserContext = createContext(JSON.parse(localStorage.getItem("userData") || "{}"));
+const UserContext = createContext<UserContextType | null>(null);
 
 export default UserContext;
