@@ -8,9 +8,9 @@ function ProductCard({ data }: { data: ProductInfoDto | null }) {
   return (
     <Paper shadow="sm" radius="md" p="md" withBorder onMouseOver={() => setHover(true)}>
       <Group>
-        <Title order={2}>{data?.productName || "Tomato"}</Title>
+        <Title order={2}>{data?.cropName || "Tomato"}</Title>
         <p>{data?.availableQuantity || "100kg"}</p>
-        <p>by {data?.owner || "godzilla"}</p>
+        <p>by {data?.userId || "godzilla"}</p>
       </Group>
       {Hover && (
         <>
@@ -26,13 +26,19 @@ function ProductCard({ data }: { data: ProductInfoDto | null }) {
 }
 
 export default function browse() {
-  // const []
-  // useEffect(() => {
+  const [data, setData] = React.useState<ProductInfoDto[]>([]);
+  useEffect(() => {
+    fetch("http://localhost:3100/api/product")
+      .then((res) => res.json())
+      .then((data) => setData(data));
+  }, []);
 
   return (
     <AppShell padding={0} header={<HeaderMenuColored />}>
       <Group>
-        <ProductCard data={null} />
+        {data.map((item) => (
+          <ProductCard data={item} />
+        ))}
       </Group>
     </AppShell>
   );

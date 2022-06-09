@@ -1,6 +1,6 @@
 interface ProductInfoDto {
   id: string;
-  owner: string;
-  productName: string;
+  userId: string;
+  cropName: string;
   availableQuantity: number;
 }
