@@ -9,9 +9,9 @@ function ProductCard({ data }: { data: ProductInfoDto | null }) {
   return (
     <Paper shadow="sm" radius="md" p="md" withBorder>
       <Group>
-        <Title order={2}>{data?.cropName || "Tomato"}</Title>
+        <Title order={2}>{data?.cropName || "UNKNOWN PRODUCT"}</Title>
         <p>{data?.availableQuantity || "100kg"}kg</p>
-        <p>by {data?.userId || "godzilla"}</p>
+        <p>by {data?.userId || "unknown"}</p>
         <Button onClick={() => setOpened(true)}>Buy</Button>
         <Modal
           opened={opened}

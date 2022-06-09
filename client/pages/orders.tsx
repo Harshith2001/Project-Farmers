@@ -1,12 +1,20 @@
 import { AppShell, Header, Navbar } from "@mantine/core";
 import type { NextPage } from "next";
 import Head from "next/head";
-import React from "react";
+import Router from "next/router";
+import React, { useEffect } from "react";
 
 import data from "../components/data";
 import HeaderMenuColored from "../components/NavHeader";
 
 const Home: NextPage = () => {
+  useEffect(() => {
+    // redirect to login page if not logged in
+    if (!localStorage.getItem("jwt")) {
+      Router.push("/");
+    }
+  }, []);
+
   return (
     <>
       <Head>

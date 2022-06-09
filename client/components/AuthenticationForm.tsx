@@ -20,11 +20,10 @@ export function AuthenticationForm() {
     initialValues: {
       email: "",
       userId: "", // for login
-      name: "",
+      name: `whatever${Math.floor(Math.random() * 100)}`,
       password: "", // for login
-      mobile: "",
-      userType: "", // farmer or end-user
-      terms: true,
+      mobile: `${Math.floor(Math.random() * 1000000000)}`,
+      isFarmer: false,
     },
 
     validationRules: {
@@ -45,10 +44,10 @@ export function AuthenticationForm() {
     } else {
       body = JSON.stringify({
         userId: form.values.userId,
-        name: form.values.name || `whatever${Math.floor(Math.random() * 100)}`,
+        name: form.values.name,
         email: form.values.email,
-        mobile: form.values.mobile || `${Math.floor(Math.random() * 1000000000)}`,
-        userType: form.values.userType || "farmer",
+        mobile: form.values.mobile,
+        userType: form.values.isFarmer ? "farmer" : "end-user",
         password: form.values.password,
       });
       url = "/auth/register";
@@ -61,6 +60,7 @@ export function AuthenticationForm() {
       },
       body: body,
     };
+    
     fetch(process.env.API_URL + url, req)
       .then((x) => x.json())
       .then((x) => {
@@ -94,10 +94,31 @@ export function AuthenticationForm() {
                 onChange={(event) => form.setFieldValue("email", event.currentTarget.value)}
                 error={form.errors.email && "Invalid email"}
               />
+
+              <TextInput
+                label="Name"
+                placeholder="Your Name"
+                value={form.values.name}
+                onChange={(event) => form.setFieldValue("name", event.currentTarget.value)}
+              />
+
+              <TextInput
+                label="Mobile"
+                placeholder="Your Mobile"
+                value={form.values.mobile}
+                onChange={(event) => form.setFieldValue("mobile", event.currentTarget.value)}
+              />
+
+              <Checkbox
+                label="Are you a farmer?"
+                checked={form.values.isFarmer}
+                onChange={(event) => form.setFieldValue("isFarmer", event.currentTarget.checked)}
+              />
             </>
           )}
 
           <TextInput
+            required
             label="User Id"
             placeholder="Your user Id"
             value={form.values.userId}
@@ -112,13 +133,7 @@ export function AuthenticationForm() {
             error={form.errors.password && "Password should include at least 8 characters"}
           />
 
-          {type === "Register" && (
-            <Checkbox
-              label="I accept terms and conditions"
-              checked={form.values.terms}
-              onChange={(event) => form.setFieldValue("terms", event.currentTarget.checked)}
-            />
-          )}
+          {type === "Register" && <></>}
         </Group>
 
         <Group position="apart" mt="xl">
