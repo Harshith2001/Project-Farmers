@@ -37,11 +37,17 @@ router.post("/login", (req, res) => {
             message: "Error signing token",
           });
         } else {
-          res.json({
-            success: true,
-            message: "Login successful",
-            token: "Bearer " + token,
-          });
+          userModel.findOne({ userId }).then((data) =>
+            res.json({
+              success: true,
+              message: "Login successful",
+              token: "Bearer " + token,
+              userData: {
+                userId: data.userId,
+                userType: data.userType,
+              },
+            })
+          );
         }
       });
     }
@@ -111,6 +117,10 @@ router.post("/register", async (req, res) => {
       success: true,
       message: "User registered successfully",
       token: "Bearer " + token,
+      userData: {
+        userId: req.body.userId,
+        userType: req.body.userType,
+      },
     });
   }
 });
