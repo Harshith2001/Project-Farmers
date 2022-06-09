@@ -36,7 +36,8 @@ function ProductCard({ data }: { data: ProductInfoDto | null }) {
 }
 
 export default function browse() {
-  const [data, setData] = React.useState<ProductInfoDto[]>([]);
+  const [data, setData] = useState<ProductInfoDto[]>([]);
+  
   useEffect(() => {
     fetch("http://localhost:3100/api/product")
       .then((res) => res.json())

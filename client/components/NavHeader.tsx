@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { createStyles, Header, Menu, Group, Center, Burger, Container, Title } from "@mantine/core";
 import Link from "next/link";
 import UserContext, { UserContextType } from "../lib/UserContext";
@@ -53,11 +53,11 @@ interface HeaderSearchProps {
 
 export default function HeaderMenuColored() {
   const { classes } = useStyles();
-  const data = useContext(UserContext) as UserContextType;
+  // const userData = useContext(UserContext);
 
   let links: HeaderSearchProps["links"] = [
     { link: "/browse", label: "Browse", show: UserTypes.all },
-    { link: `/profile/${data.userId}`, label: "Profile", show: UserTypes.both },
+    // { link: `/profile/${userData?.userId}`, label: "Profile", show: UserTypes.both },
     { link: "/addcrops", label: "Add crops", show: UserTypes.both },
     { link: "/orders", label: "Orders", show: UserTypes.both },
     { link: ".", label: "Logout", show: UserTypes.both },
@@ -71,7 +71,7 @@ export default function HeaderMenuColored() {
           <Title>Project Farmers</Title>
           <Group spacing={5}>
             {links.map((link) => {
-              let userLoggedIn = data.userType === "farmer" || data.userType === "end-user";
+              // let userLoggedIn = data.userType === "farmer" || data.userType === "end-user";
               return (
                 <Link href={link.link} key={link.label}>
                   <a className={classes.link}>{link.label}</a>

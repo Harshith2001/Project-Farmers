@@ -68,7 +68,7 @@ export function AuthenticationForm() {
         console.log(x);
         if (x.success) {
           localStorage.setItem("jwt", x.token);
-          localStorage.setItem("userData", x.userData);
+          localStorage.setItem("userData", JSON.stringify(x.userData));
           Router.push("/browse");
         } else {
           alert(x.message);
