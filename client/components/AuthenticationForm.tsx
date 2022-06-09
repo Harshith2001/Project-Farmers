@@ -12,6 +12,7 @@ import {
   Checkbox,
   Anchor,
 } from "@mantine/core";
+import Router from "next/router";
 
 export function AuthenticationForm() {
   const [type, toggle] = useToggle("Login", ["Login", "Register"]);
@@ -60,13 +61,15 @@ export function AuthenticationForm() {
       },
       body: body,
     };
-    
+
     fetch(process.env.API_URL + url, req)
       .then((x) => x.json())
       .then((x) => {
         console.log(x);
         if (x.success) {
           localStorage.setItem("jwt", x.token);
+          localStorage.setItem("userData", x.userData);
+          Router.push("/browse");
         } else {
           alert(x.message);
         }
