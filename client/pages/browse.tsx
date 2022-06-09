@@ -9,7 +9,7 @@ function ProductCard({ data }: { data: ProductInfoDto | null }) {
     <Paper shadow="sm" radius="md" p="md" withBorder onMouseOver={() => setHover(true)}>
       <Group>
         <Title order={2}>{data?.cropName || "Tomato"}</Title>
-        <p>{data?.availableQuantity || "100kg"}</p>
+        <p>{data?.availableQuantity || "100kg"}kg</p>
         <p>by {data?.userId || "godzilla"}</p>
       </Group>
       {Hover && (
