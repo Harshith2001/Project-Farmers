@@ -8,6 +8,16 @@ import myPassport from "../util/passport.js";
 const router = Router();
 router.use(myPassport.initialize());
 
+const isAuth = (req, res, next) => {
+  const auth = req.header("Authorization");
+
+  if (auth) {
+    myPassport.authenticate("jwt", { session: false })(req, res, next);
+  } else {
+    next();
+  }
+};
+
 const isAllowed = async (req, res, next) => {
   let utype;
   await userModel.find({ userId: req.params.id }).then((user) => {
@@ -36,12 +46,11 @@ const isAuthorized = async (req, res, next) => {
 };
 // For testing purpose only should be removed during deployment
 router.get("/", myPassport.authenticate("jwt", { session: false }), isAuthorized, (req, res) => {
-  console.log(myPassport.user);
   userModel.find({}).then((data) => res.json(data));
 });
 
 // route for get api is /api/user/id
-router.get("/:id", isAllowed, (req, res) => {
+router.get("/:id", isAuth, isAllowed, (req, res) => {
   userModel.find({ userId: req.params.id }).then((data) => res.json(data));
 });
 
