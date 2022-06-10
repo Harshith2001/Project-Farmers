@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { createStyles, Header, Menu, Group, Center, Burger, Container, Title } from "@mantine/core";
 import Link from "next/link";
-import UserContext, { UserContextType } from "../lib/UserContext";
+import { useUserData } from "../lib/useUserData";
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -53,11 +53,11 @@ interface HeaderSearchProps {
 
 export default function HeaderMenuColored() {
   const { classes } = useStyles();
-  // const userData = useContext(UserContext);
+  const x = useUserData();
 
   let links: HeaderSearchProps["links"] = [
     { link: "/browse", label: "Browse", show: UserTypes.all },
-    // { link: `/profile/${userData?.userId}`, label: "Profile", show: UserTypes.both },
+    { link: `/profile/${x?.userId}`, label: "Profile", show: UserTypes.both },
     { link: "/addcrops", label: "Add crops", show: UserTypes.both },
     { link: "/orders", label: "Orders", show: UserTypes.both },
     { link: ".", label: "Logout", show: UserTypes.both },

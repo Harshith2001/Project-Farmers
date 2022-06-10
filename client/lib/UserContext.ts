@@ -1,10 +1,12 @@
-import { createContext } from "react";
+import { createContext, Dispatch, SetStateAction } from "react";
 
-export type UserContextType = {
+export type UserContextData = {
   userId: string;
   userType: "farmer" | "end-user";
 };
 
-const UserContext = createContext<UserContextType | null>(null);
+type UserContextType = [UserContextData | null, Dispatch<SetStateAction<UserContextData | null>>];
+
+const UserContext = createContext<UserContextType>([null, () => null]);
 
 export default UserContext;
