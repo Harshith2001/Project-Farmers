@@ -3,7 +3,8 @@ import { Divider, Image } from "@mantine/core";
 import UserContext from "../lib/UserContext";
 
 export default function Profile({ data }: any) {
-  //   const user = useContext(UserContext);
+  const user = useContext(UserContext);
+  console.log(user?.userId, data.userId);
 
   return (
     <>
@@ -14,6 +15,7 @@ export default function Profile({ data }: any) {
           alt="Random unsplash image"
         />
       </div>
+      {user?.userId == data.userId && <p>Current User</p>}
       <Divider my="sm" style={{ marginLeft: "300px", marginRight: "300px" }} />
       <p>Username: {data?.userId || "Harsh"}</p>
       <p>Name: {data?.name || "Harshith"}</p>

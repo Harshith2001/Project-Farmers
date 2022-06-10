@@ -2,7 +2,6 @@
     "recommendations": [
         "visualstudioexptteam.vscodeintellicode",
         "esbenp.prettier-vscode",
-        "dsznajder.es7-react-js-snippets",
         "christian-kohler.npm-intellisense",
         "will-stone.plastic"
     ]
