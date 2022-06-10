@@ -1,13 +1,18 @@
 import React, { useContext } from "react";
-import { Divider, Image } from "@mantine/core";
+import { Divider, Image, Title } from "@mantine/core";
 import UserContext from "../lib/UserContext";
+import { useUserData } from "../lib/useUserData";
 
 export default function Profile({ data }: any) {
-  const user = useContext(UserContext);
-  console.log(user?.userId, data.userId);
+  const user = useUserData();
 
   return (
     <>
+      {user?.userId == data.userId && (
+        <Title align="center" m={10}>
+          This is You
+        </Title>
+      )}
       <div style={{ width: 240, marginLeft: "auto", marginRight: "auto" }}>
         <Image
           radius="md"
@@ -15,9 +20,9 @@ export default function Profile({ data }: any) {
           alt="Random unsplash image"
         />
       </div>
-      {user?.userId == data.userId && <p>Current User</p>}
       <Divider my="sm" style={{ marginLeft: "300px", marginRight: "300px" }} />
       <p>Username: {data?.userId || "Harsh"}</p>
+      <p>{data?.userType}</p>
       <p>Name: {data?.name || "Harshith"}</p>
       <p>Email: {data?.email || "human@gmail.com"}</p>
       <p>Phone: {data?.mobile || "1234567890"}</p>

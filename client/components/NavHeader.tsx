@@ -53,14 +53,14 @@ interface HeaderSearchProps {
 
 export default function HeaderMenuColored() {
   const { classes } = useStyles();
-  const x = useUserData();
+  const data = useUserData();
 
   let links: HeaderSearchProps["links"] = [
     { link: "/browse", label: "Browse", show: UserTypes.all },
-    { link: `/profile/${x?.userId}`, label: "Profile", show: UserTypes.both },
-    { link: "/addcrops", label: "Add crops", show: UserTypes.both },
+    { link: `/profile/${data?.userId}`, label: "Profile", show: UserTypes.both },
+    { link: "/addcrops", label: "Add crops", show: UserTypes.farmer },
     { link: "/orders", label: "Orders", show: UserTypes.both },
-    { link: ".", label: "Logout", show: UserTypes.both },
+    { link: "/", label: "Logout", show: UserTypes.both },
     { link: "/", label: "Login", show: UserTypes.public },
   ];
 
@@ -71,7 +71,15 @@ export default function HeaderMenuColored() {
           <Title>Project Farmers</Title>
           <Group spacing={5}>
             {links.map((link) => {
-              // let userLoggedIn = data.userType === "farmer" || data.userType === "end-user";
+              let IsFarmer = data?.userType === "farmer";
+              let IsLoggedIn = data?.userId !== "";
+              let showIt =
+                link.show === UserTypes.all ||
+                (link.show === UserTypes.both && IsLoggedIn) ||
+                (link.show === UserTypes.farmer && IsFarmer) ||
+                (link.show === UserTypes.public && !IsLoggedIn);
+              if (!showIt) return null;
+
               return (
                 <Link href={link.link} key={link.label}>
                   <a className={classes.link}>{link.label}</a>
