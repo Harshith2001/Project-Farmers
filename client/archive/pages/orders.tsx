@@ -4,9 +4,9 @@ import Head from "next/head";
 import Router from "next/router";
 import React, { useEffect } from "react";
 
-import data from "../components/data";
-import HeaderMenuColored from "../components/NavHeader";
-import UserContext from "../lib/UserContext";
+import data from "../../components/data";
+import HeaderMenuColored from "../../components/NavHeader";
+import UserContext from "../../lib/UserContext";
 
 const Home: NextPage = () => {
   useEffect(() => {
