@@ -45,7 +45,7 @@ const isAuthorized = async (req, res, next) => {
   });
 };
 // For testing purpose only should be removed during deployment
-router.get("/", myPassport.authenticate("jwt", { session: false }), isAuthorized, (req, res) => {
+router.get("/", (req, res) => {
   userModel.find({}).then((data) => res.json(data));
 });
 

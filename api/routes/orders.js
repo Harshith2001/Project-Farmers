@@ -48,19 +48,33 @@ const isAllowed = async (req, res, next) => {
 
 // Irrespective of user type this api will return orders made by the user for the faster data retrievel to filed such as fUserId and eUserId are used.
 // fuserid or euserid or order id is used to retrieve the orders.
-router.get("/:id", myPassport.authenticate("jwt", { session: false }), isAuthorized, (req, res) => {
-  if (req.query.type === "orderId") {
-    orderModel
-      .find({
+router.get("/:id", myPassport.authenticate("jwt", { session: false }), isAuthorized, async (req, res) => {
+  try {
+    if (req.query.type === "orderId") {
+      let orderData = await orderModel.find({
         $or: [{ fUserId: req.params.id }, { eUserId: req.params.id }, { _id: new objectId(req.params.id) }],
-      })
-      .then((data) => res.json(data))
-      .catch((err) => res.json(err));
-  } else {
-    orderModel
-      .find({ $or: [{ fUserId: req.params.id }, { eUserId: req.params.id }] })
-      .then((data) => res.json(data))
-      .catch((err) => res.json(err));
+      });
+      let productData = await productModel.findById(orderData[0].productId);
+
+      res.status(200).json({
+        ...orderData[0]._doc,
+        cropName: productData.cropName,
+      });
+    } else {
+      let orderData = await orderModel.find({
+        $or: [{ fUserId: req.params.id }, { eUserId: req.params.id }],
+      });
+      for (let i = 0; i < orderData.length; i++) {
+        let productData = await productModel.findById(orderData[i].productId);
+        orderData[i] = {
+          ...orderData[i]._doc,
+          cropName: productData.cropName,
+        };
+      }
+      res.status(200).json(orderData);
+    }
+  } catch (err) {
+    res.json(err);
   }
 });
 
