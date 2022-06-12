@@ -1,5 +1,5 @@
 import React from "react";
-import NavBar from "./NavHeader";
+import NavBar from "../../components/NavHeader";
 
 const onSubmit = (data) => console.log(data);
 export default function Orders() {
