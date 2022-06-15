@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { createStyles, Header, Menu, Group, Center, Burger, Container, Title } from "@mantine/core";
 import Link from "next/link";
 import { useUserData } from "../lib/useUserData";
+import { UserTypes } from "../types/usertypes";
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -35,14 +36,6 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-enum UserTypes {
-  farmer = "farmer",
-  endUser = "end-user",
-  public = "public", //only to non logged
-  both = "both",
-  all = "all",
-}
-
 interface HeaderSearchProps {
   links: {
     link: string;
@@ -56,7 +49,7 @@ export default function HeaderMenuColored() {
   const data = useUserData();
 
   let links: HeaderSearchProps["links"] = [
-    { link: "/browse", label: "Browse", show: UserTypes.all },
+    { link: "/browse", label: "Browse", show: UserTypes.endUser },
     { link: `/profile/${data?.userId}`, label: "Profile", show: UserTypes.both },
     { link: "/addcrops", label: "Add crops", show: UserTypes.farmer },
     { link: "/orders", label: "Orders", show: UserTypes.both },
@@ -65,19 +58,23 @@ export default function HeaderMenuColored() {
   ];
 
   return (
-    <Header height={56} className={classes.header} mb={120}>
+    <Header height={56} className={classes.header} mb={50}>
       <Container>
         <div className={classes.inner}>
           <Title>Project Farmers</Title>
           <Group spacing={5}>
             {links.map((link) => {
               let IsFarmer = data?.userType === "farmer";
-              let IsLoggedIn = data?.userId !== "";
+              let IsLoggedIn = data?.userId !== undefined && data?.userId !== null;
+              // console.log(IsFarmer, IsLoggedIn, data?.userId);
+
               let showIt =
                 link.show === UserTypes.all ||
                 (link.show === UserTypes.both && IsLoggedIn) ||
                 (link.show === UserTypes.farmer && IsFarmer) ||
+                link.show === UserTypes.endUser ||
                 (link.show === UserTypes.public && !IsLoggedIn);
+
               if (!showIt) return null;
 
               return (

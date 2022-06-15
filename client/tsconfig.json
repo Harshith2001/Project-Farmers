@@ -2,11 +2,7 @@
   "compilerOptions": {
     "target": "ES2018",
     "module": "esnext",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "moduleResolution": "node",
     "esModuleInterop": true,
     "resolveJsonModule": true,
@@ -18,19 +14,10 @@
     "noEmit": true,
     "jsx": "preserve",
     "paths": {
-      "@styles": [
-        "./styles/"
-      ]
+      "@styles": ["./styles/"]
     },
     "incremental": true
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "../types/*.d.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "types/*.d.ts", "../types/*.d.ts"],
+  "exclude": ["node_modules"]
 }

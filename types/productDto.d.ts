@@ -1,5 +1,5 @@
 interface ProductInfoDto {
-  id: string;
+  _id: string;
   userId: string;
   cropName: string;
   availableQuantity: number;
