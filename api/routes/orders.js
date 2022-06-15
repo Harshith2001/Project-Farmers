@@ -103,9 +103,9 @@ router.post(
     } else {
       let demandObject = demandDbData[`${product.cropName}`][0];
       if (`${req.body.bidValue}` in demandObject) {
-        demandObject[`${req.body.bidValue}`] += req.body.quantity;
+        demandObject[`${req.body.bidValue}`] += parseInt(req.body.quantity);
       } else {
-        demandObject[`${req.body.bidValue}`] = req.body.quantity;
+        demandObject[`${req.body.bidValue}`] = parseInt(req.body.quantity);
       }
       demandDbData[`${product.cropName}`][0] = demandObject;
       demandDbData[`${product.cropName}`][1] += parseInt(req.body.quantity);
@@ -134,7 +134,7 @@ router.post(
       price: price,
     });
     await productModel.findByIdAndUpdate(req.body.productId, {
-      availableQuantity: product.availableQuantity - req.body.quantity,
+      availableQuantity: product.availableQuantity - parseInt(req.body.quantity),
     });
     await order.save();
 

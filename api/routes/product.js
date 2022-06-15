@@ -53,9 +53,9 @@ router.get("/", (req, res) => {
 router.post("/", myPassport.authenticate("jwt", { session: false }), isAllowed, async (req, res) => {
   let product = new productModel(req.body);
   if (req.body.cropName in demandDbData) {
-    demandDbData[`${req.body.cropName}`][2] += req.body.quantity;
+    demandDbData[`${req.body.cropName}`][2] += parseInt(req.body.quantity);
   } else {
-    demandDbData[`${req.body.cropName}`] = [{}, 0, req.body.quantity];
+    demandDbData[`${req.body.cropName}`] = [{}, 0, parseInt(req.body.quantity)];
   }
   demandDb.write(demandDbData);
   if (demandDbData[`${req.body.cropName}`][2] >= 2000) {
