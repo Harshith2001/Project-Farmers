@@ -108,7 +108,7 @@ router.post(
         demandObject[`${req.body.bidValue}`] = req.body.quantity;
       }
       demandDbData[`${product.cropName}`][0] = demandObject;
-      demandDbData[`${product.cropName}`][1] += req.body.quantity;
+      demandDbData[`${product.cropName}`][1] += parseInt(req.body.quantity);
       demandDb.write(demandDbData);
     }
 
