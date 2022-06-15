@@ -96,7 +96,7 @@ router.post(
       return res.status(404).send("Product not found");
     }
     if (product.availableQuantity < parseInt(req.body.quantity)) {
-      res.json({
+      return res.status(401).json({
         success: false,
         message: "Required quantity is less than available quantity",
       });
