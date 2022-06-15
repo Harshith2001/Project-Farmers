@@ -1,4 +1,4 @@
-import { AppShell, Grid, Group, Paper, Title } from "@mantine/core";
+import { AppShell, Grid, Group, Paper, Stack, Text, Title } from "@mantine/core";
 import { useEffect, useState } from "react";
 import HeaderMenuColored from "../components/NavHeader";
 import { UserContextData } from "../lib/UserContext";
@@ -7,13 +7,17 @@ import { useUserData } from "../lib/useUserData";
 function OrderCard({ data }: { data: orderDto | null }) {
   return (
     <Paper shadow="sm" radius="md" p="md" withBorder>
-      <Group>
-        <Title order={2}>{data?.cropName || "UNKNOWN PRODUCT"}</Title>
-        <p>Order Id: {data?._id || "1234"}</p>
-        <p>Sold By {data?.fUserId || "Pupa"}</p>
-        <p>Sold Quantity: {data?.quantity.toString() || "100kgs"}</p>
-        <p>Total Price Paid: {data?.price || "10000"}</p>
-      </Group>
+      <Stack>
+        <Group style={{ backgroundColor: "rgb(120, 180, 240)", borderRadius: "5px" }} p={5}>
+          <Title order={2}>{data?.cropName || "UNKNOWN PRODUCT"}</Title>
+          <Text size="xs">from {data?.fUserId || "Pupa"}</Text>
+        </Group>
+        <Group position="apart">
+          <Text size="xs">Order Id: {data?._id || "1234"}</Text>
+          <Text>{data?.quantity.toString() || "100"} Kg</Text>
+          <Text>Paid: {data?.price || "10000"}</Text>
+        </Group>
+      </Stack>
     </Paper>
   );
 }
@@ -37,13 +41,11 @@ export default function orders() {
 
   return (
     <AppShell padding={0} header={<HeaderMenuColored />}>
-      <Grid p={10}>
+      <Stack style={{ margin: "0 auto", width: "500px" }}>
         {data.map((item) => (
-          <Grid.Col span={3}>
-            <OrderCard data={item} />
-          </Grid.Col>
+          <OrderCard data={item} />
         ))}
-      </Grid>
+      </Stack>
     </AppShell>
   );
 }

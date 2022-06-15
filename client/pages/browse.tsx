@@ -1,15 +1,4 @@
-import {
-  AppShell,
-  Button,
-  Divider,
-  Grid,
-  Group,
-  Modal,
-  NumberInput,
-  Paper,
-  Title,
-  Text,
-} from "@mantine/core";
+import { AppShell, Button, Group, Modal, NumberInput, Paper, Title, Text, Stack } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
 import React, { useEffect, useState } from "react";
 import HeaderMenuColored from "../components/NavHeader";
@@ -60,48 +49,46 @@ function ProductCard({ data }: { data: ProductInfoDto | null }) {
 
   return (
     <Paper shadow="sm" radius="md" p="md" withBorder>
-      <Group>
+      <Group grow>
         <Title order={2}>{data?.cropName || "UNKNOWN PRODUCT"}</Title>
         <p>{data?.availableQuantity || "100kg"}kg</p>
         <p>by {data?.userId || "unknown"}</p>
         <Button onClick={() => setOpened(true)}>Buy</Button>
-        <Modal
-          opened={opened}
-          onClose={() => setOpened(false)}
-          title={`${data?.cropName} by ${data?.userId}`}>
-          <Paper radius="md" p="md" withBorder>
-            <form onSubmit={form.onSubmit(onSubmit)}>
-              <Group>
-                <NumberInput
-                  placeholder="Bid value (in string)"
-                  label="Bid Value"
-                  required
-                  value={form.values.bidValue}
-                  onChange={(e) => form.setFieldValue("bidValue", e as number)}
-                />
-                <NumberInput
-                  placeholder="(in number)"
-                  label="Quantity"
-                  required
-                  value={form.values.quantity}
-                  onChange={(e) => form.setFieldValue("quantity", e as number)}
-                  max={data?.availableQuantity}
-                />
-                <Button type="submit">Buy</Button>
-              </Group>
-            </form>
-            {price != null && (
-              <>
-                <Divider p={10} />
-                <Text size="lg" weight={500} align="center">
-                  Final Price: {price}
-                </Text>
-                <Button onClick={() => onSubmitx()}>Bid</Button>
-              </>
-            )}
-          </Paper>
-        </Modal>
       </Group>
+      <Modal opened={opened} onClose={() => setOpened(false)} title={`${data?.cropName} by ${data?.userId}`}>
+        <Paper radius="md" p="md" withBorder m={5}>
+          <form onSubmit={form.onSubmit(onSubmit)}>
+            <Stack align={"center"}>
+              <NumberInput
+                placeholder="Bid value (in string)"
+                label="Bid Value"
+                required
+                value={form.values.bidValue}
+                onChange={(e) => form.setFieldValue("bidValue", e as number)}
+              />
+              <NumberInput
+                placeholder="(in number)"
+                label="Quantity"
+                required
+                value={form.values.quantity}
+                onChange={(e) => form.setFieldValue("quantity", e as number)}
+                max={data?.availableQuantity}
+              />
+              <Button type="submit">Bid</Button>
+            </Stack>
+          </form>
+        </Paper>
+        {price != null && (
+          <Paper radius="md" p="md" withBorder m={5}>
+            <Group position="apart">
+              <Text size="lg" weight={500} align="center">
+                Final Price: {price}
+              </Text>
+              <Button onClick={() => onSubmitx()}>Confirm Buy</Button>
+            </Group>
+          </Paper>
+        )}
+      </Modal>
     </Paper>
   );
 }
@@ -117,13 +104,11 @@ export default function browse() {
 
   return (
     <AppShell padding={0} header={<HeaderMenuColored />}>
-      <Grid p={10}>
+      <Stack style={{ margin: "0 auto", width: "500px" }}>
         {data.map((item) => (
-          <Grid.Col span={4}>
-            <ProductCard data={item} />
-          </Grid.Col>
+          <ProductCard data={item} />
         ))}
-      </Grid>
+      </Stack>
     </AppShell>
   );
 }
