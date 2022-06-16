@@ -1,6 +1,7 @@
 import { AppShell, Button, Group, Modal, NumberInput, Paper, Title, Text, Stack } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
 import { NotificationsProvider, showNotification } from "@mantine/notifications";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { Check } from "tabler-icons-react";
 import HeaderMenuColored from "../components/NavHeader";
@@ -52,7 +53,7 @@ function ProductCard({ data }: { data: ProductInfoDto | null }) {
       autoClose: 10000,
     });
     setTimeout(() => setOpened(false), 500);
-    
+
     // setPrice(fetchedPrice as string);
     console.log(fetchedPrice);
   }
@@ -61,8 +62,10 @@ function ProductCard({ data }: { data: ProductInfoDto | null }) {
     <Paper shadow="sm" radius="md" p="md" withBorder>
       <Group grow>
         <Title order={2}>{data?.cropName || "UNKNOWN PRODUCT"}</Title>
-        <p>{data?.availableQuantity || "100kg"}kg</p>
-        <p>by {data?.userId || "unknown"}</p>
+        <p style={{ textAlign: "center" }}>{data?.availableQuantity || "100kg"}kg</p>
+        <Link href={`/profile/${data?.userId}`}>
+          <a>by {data?.userId || "unknown"}</a>
+        </Link>
         <Button onClick={() => setOpened(true)}>Buy</Button>
       </Group>
       <Modal opened={opened} onClose={() => setOpened(false)} title={`${data?.cropName} by ${data?.userId}`}>

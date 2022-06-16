@@ -65,7 +65,7 @@ export default function HeaderMenuColored() {
           <Group spacing={5}>
             {links.map((link) => {
               let findUserType = (() => {
-                if (!data) {
+                if (data == null || data == undefined) {
                   return UserTypes.public;
                 } else if (data?.userType === "farmer") {
                   return UserTypes.farmer;
