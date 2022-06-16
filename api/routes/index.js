@@ -4,7 +4,7 @@ import product from "./product.js";
 import orders from "./orders.js";
 import price from "./price.js";
 import auth from "./auth/auth.js";
-import test from "./test.js";
+import test from "./mock_route.js";
 const router = Router();
 
 router.use("/user", user);
