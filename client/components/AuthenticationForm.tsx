@@ -80,7 +80,19 @@ export function AuthenticationForm() {
   }
 
   return (
-    <Paper radius="md" p="xl" withBorder shadow={"lg"}>
+    <Paper
+      radius="md"
+      p="xl"
+      withBorder
+      shadow={"lg"}
+      style={{
+        position: "absolute",
+        background: "hsla(0, 0%, 100%, 0.6)",
+        borderRadius: "6px",
+        boxShadow: "0 5px 30px rgba(0, 0, 0, 0.4)",
+        backdropFilter: "blur(10px)",
+        border: "1px solid hsla(0, 0%, 100%, 0.6)",
+      }}>
       <Text size="lg" weight={500} align="center">
         {type}
       </Text>

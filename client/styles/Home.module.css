@@ -1,11 +1,15 @@
 .container {
-  /* background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDXOTCZ_1POKBjCY7bLzz3cK-27FtaK8N71A&usqp=CAU"); */
   background-size: cover;
   min-height: 100vh;
-  padding: 0 0.5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
+}
+
+.container img {
+  height: 100%;
+  object-fit: fill;
+  width: 100%;
 }
