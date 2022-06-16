@@ -1,12 +1,7 @@
 import assert from "node:assert";
 import test from "node:test";
-import { API_LOCAL_URL_ADDR } from "../api/bin/www.js";
 import { CROP_NAMES, FIRST_NAMES, LAST_NAMES } from "./mock-data.js";
-
-function apiAddr(to) {
-  return `${API_LOCAL_URL_ADDR}${to}`;
-}
-const getRand = (till = 10) => Math.floor(Math.random() * till) - 1;
+import { getRand, apiAddr } from "./mock-functions.js";
 
 test("farmer Account create and Add Crop", async (t) => {
   let fname = FIRST_NAMES[getRand()];
@@ -22,7 +17,7 @@ test("farmer Account create and Add Crop", async (t) => {
       userId: uid,
       password: "farmer1",
       name: `${fname} ${lname}`,
-      email: `${fname}${getRand()}@farmer.com`,
+      email: `${fname}${getRand(100)}@farmer.com`,
       userType: "farmer",
       mobile: getRand(1000_000_0000),
       city: "Mysore",
