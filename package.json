@@ -3,8 +3,10 @@
     "api",
     "client"
   ],
+  "type": "module",
   "scripts": {
-    "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx}\""
+    "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx}\"",
+    "test": "node --test tests/"
   },
   "devDependencies": {
     "@types/node": "18.0.0",
