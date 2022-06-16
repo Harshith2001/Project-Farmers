@@ -64,16 +64,20 @@ export default function HeaderMenuColored() {
           <Title>Project Farmers</Title>
           <Group spacing={5}>
             {links.map((link) => {
-              let IsFarmer = data?.userType === "farmer";
-              let IsLoggedIn = data?.userId !== undefined && data?.userId !== null;
-              // console.log(IsFarmer, IsLoggedIn, data?.userId);
+              let findUserType = (() => {
+                if (!data) {
+                  return UserTypes.public;
+                } else if (data?.userType === "farmer") {
+                  return UserTypes.farmer;
+                } else if (data?.userType === "end-user") {
+                  return UserTypes.endUser;
+                } else return null;
+              })();
 
               let showIt =
                 link.show === UserTypes.all ||
-                (link.show === UserTypes.both && IsLoggedIn) ||
-                (link.show === UserTypes.farmer && IsFarmer) ||
-                link.show === UserTypes.endUser ||
-                (link.show === UserTypes.public && !IsLoggedIn);
+                link.show === findUserType ||
+                (link.show === UserTypes.both && findUserType != null && findUserType != UserTypes.public);
 
               if (!showIt) return null;
 
