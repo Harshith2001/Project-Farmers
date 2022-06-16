@@ -99,7 +99,7 @@ router.post(
     } else {
       let demandData = await demandModel.findOne({ cropName: product.cropName });
 
-      if (demandData.demandDataObject === undefined){
+      if (demandData.demandDataObject === undefined || demandData.demandDataObject === null) {
         demandData.demandDataObject = {};
       }
       if (`${req.body.bidValue}` in demandData.demandDataObject) {
@@ -121,8 +121,8 @@ router.post(
         const price = new priceAlgorithm(product.cropName, demandData.demandDataObject);
         let newPrice = await price.priceCalculator();
         await priceModel.findOneAndUpdate({ cropName: product.cropName }, { $set: { price: newPrice } });
-        demandData.demandDataObject = {};
-        demandDbData.orderDemandTotals = 0;
+        demandData.demandDataObject = null;
+        demandData.orderDemandTotals = 0;
         await demandModel.findOneAndUpdate({ cropName: product.cropName }, demandData);
       }
       let order = new orderModel({
