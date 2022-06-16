@@ -6,6 +6,7 @@ import Head from "next/head";
 import React from "react";
 import HeaderMenuColored from "../components/NavHeader";
 import { UserContextData } from "../lib/UserContext";
+import { Check } from "tabler-icons-react";
 
 const Home: NextPage = () => {
   const form = useForm({
@@ -41,6 +42,8 @@ const Home: NextPage = () => {
         showNotification({
           title: data.message,
           message: `${data.data.cropName} - ${data.data.quantity}Kgs`,
+          icon: <Check size={48} strokeWidth={2} color={"white"} />,
+          autoClose: 10000,
         });
         form.setValues({
           cropName: "",
