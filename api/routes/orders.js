@@ -5,11 +5,8 @@ import { ObjectId } from "mongodb";
 import myPassport from "../util/passport.js";
 import userModel from "../models/userModel.js";
 import priceModel from "../models/priceModel.js";
-import database from "../util/database.js";
 import priceAlgorithm from "../util/priceAlgorithm.js";
-
-const demandDb = new database("./databases/demand.json");
-const demandDbData = demandDb.read();
+import demandModel from "../models/demandModel.js";
 
 const router = Router();
 const objectId = ObjectId;
@@ -93,52 +90,55 @@ router.post(
       }
     });
     if (dataNotFound) {
-      return res.status(404).send("Product not found");
-    }
-    if (product.availableQuantity < parseInt(req.body.quantity)) {
-      return res.status(401).json({
+      res.status(404).send("Product not found");
+    } else if (product.availableQuantity < parseInt(req.body.quantity)) {
+      res.status(401).json({
         success: false,
         message: "Required quantity is less than available quantity",
       });
     } else {
-      let demandObject = demandDbData[`${product.cropName}`][0];
-      if (`${req.body.bidValue}` in demandObject) {
-        demandObject[`${req.body.bidValue}`] += parseInt(req.body.quantity);
-      } else {
-        demandObject[`${req.body.bidValue}`] = parseInt(req.body.quantity);
+      let demandData = await demandModel.findOne({ cropName: product.cropName });
+
+      if (demandData.demandDataObject === undefined){
+        demandData.demandDataObject = {};
       }
-      demandDbData[`${product.cropName}`][0] = demandObject;
-      demandDbData[`${product.cropName}`][1] += parseInt(req.body.quantity);
-      demandDb.write(demandDbData);
+      if (`${req.body.bidValue}` in demandData.demandDataObject) {
+        demandData.demandDataObject[`${req.body.bidValue}`] += parseInt(req.body.quantity);
+      } else {
+        demandData.demandDataObject[`${req.body.bidValue}`] = parseInt(req.body.quantity);
+      }
+
+      demandData.orderDemandTotals += parseInt(req.body.quantity);
+      await demandModel.findOneAndUpdate({ cropName: product.cropName }, demandData);
+
+      let price = 0;
+
+      await priceModel.findOne({ cropName: product.cropName }).then((data) => {
+        price = data.price * req.body.quantity;
+      });
+
+      if (demandData.orderDemandTotals >= 1000) {
+        const price = new priceAlgorithm(product.cropName, demandData.demandDataObject);
+        let newPrice = await price.priceCalculator();
+        await priceModel.findOneAndUpdate({ cropName: product.cropName }, { $set: { price: newPrice } });
+        demandData.demandDataObject = {};
+        demandDbData.orderDemandTotals = 0;
+        await demandModel.findOneAndUpdate({ cropName: product.cropName }, demandData);
+      }
+      let order = new orderModel({
+        fUserId: req.body.fUserId,
+        eUserId: req.body.eUserId,
+        productId: req.body.productId,
+        quantity: req.body.quantity,
+        price: price,
+      });
+      await productModel.findByIdAndUpdate(req.body.productId, {
+        availableQuantity: product.availableQuantity - parseInt(req.body.quantity),
+      });
+      await order.save();
+
+      res.status(201).json({ success: true, data: order });
     }
-
-    let price = 0;
-
-    await priceModel.findOne({ cropName: product.cropName }).then((data) => {
-      price = data.price * req.body.quantity;
-    });
-
-    if (demandDbData[`${product.cropName}`][1] >= 1000) {
-      const price = new priceAlgorithm(product.cropName, demandDbData[`${product.cropName}`][0]);
-      let newPrice = await price.priceCalculator();
-      await priceModel.findOneAndUpdate({ cropName: product.cropName }, { $set: { price: newPrice } });
-      demandDbData[`${product.cropName}`][0] = {};
-      demandDbData[`${product.cropName}`][1] = 0;
-      demandDb.write(demandDbData);
-    }
-    let order = new orderModel({
-      fUserId: req.body.fUserId,
-      eUserId: req.body.eUserId,
-      productId: req.body.productId,
-      quantity: req.body.quantity,
-      price: price,
-    });
-    await productModel.findByIdAndUpdate(req.body.productId, {
-      availableQuantity: product.availableQuantity - parseInt(req.body.quantity),
-    });
-    await order.save();
-
-    res.status(201).json({ success: true, data: order });
   }
   //have to update the available quantity of the product in product model.
 );

@@ -2,13 +2,10 @@ import { Router } from "express";
 import productModel from "../models/productModel.js";
 import myPassport from "../util/passport.js";
 import userModel from "../models/userModel.js";
-import database from "../util/database.js";
 import priceAlgorithm from "../util/priceAlgorithm.js";
 import priceModel from "../models/priceModel.js";
 import orderModel from "../models/orderModel.js";
-
-const demandDb = new database("./databases/demand.json");
-const demandDbData = demandDb.read();
+import demandModel from "../models/demandModel.js";
 
 const router = Router();
 router.use(myPassport.initialize());
@@ -52,18 +49,26 @@ router.get("/", (req, res) => {
 
 router.post("/", myPassport.authenticate("jwt", { session: false }), isAllowed, async (req, res) => {
   let product = new productModel(req.body);
-  if (req.body.cropName in demandDbData) {
-    demandDbData[`${req.body.cropName}`][2] += parseInt(req.body.quantity);
+
+  let demandData = await demandModel.findOne({ cropName: req.body.cropName });
+  if (demandData !== null) {
+    demandData.productSupplyTotals += parseInt(req.body.quantity);
   } else {
-    demandDbData[`${req.body.cropName}`] = [{}, 0, parseInt(req.body.quantity)];
+    let data = {
+      cropName: req.body.cropName,
+      productSupplyTotals: parseInt(req.body.quantity),
+      demandDataObject: {},
+      orderDemandTotals: 0,
+    };
+    demandData = new demandModel(data);
   }
-  demandDb.write(demandDbData);
-  if (demandDbData[`${req.body.cropName}`][2] >= 2000) {
-    const price = new priceAlgorithm(req.body.cropName, demandDbData[`${req.body.cropName}`][0]);
+  demandData.save((err) => console.log(err));
+
+  if (demandData.productSupplyTotals >= 2000 && demandData.orderDemandTotals > 0) {
+    const price = new priceAlgorithm(req.body.cropName, demandData.demandDataObject);
     let newPrice = price.priceCalculator();
     await priceModel.findOneAndUpdate({ cropName: req.body.cropName }, { $set: { price: newPrice } });
-    demandDbData[`${req.body.cropName}`][2] = 0;
-    demandDb.write(demandDbData);
+    await demandModel.findOneAndUpdate({ cropName: req.body.cropName }, { $set: { productSupplyTotals: 0 } });
   }
   await product.save();
   res.status(201).json({ success: true, data: product });
