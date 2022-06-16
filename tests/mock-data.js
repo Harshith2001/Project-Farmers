@@ -24,4 +24,6 @@ export const LAST_NAMES = [
   "Anderson",
 ];
 
+export const CROP_NAMES = ["Tomato", "Potato"];
+
 export const USER_TYPES = ["end-user", "farmer"];

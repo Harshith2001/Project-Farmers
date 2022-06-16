@@ -1,7 +1,7 @@
 import assert from "node:assert";
 import test from "node:test";
 import { API_LOCAL_URL_ADDR } from "../api/bin/www.js";
-import { FIRST_NAMES, LAST_NAMES } from "./mock-data.js";
+import { CROP_NAMES, FIRST_NAMES, LAST_NAMES } from "./mock-data.js";
 
 function apiAddr(to) {
   return `${API_LOCAL_URL_ADDR}${to}`;
@@ -34,5 +34,27 @@ test("farmer Account create and Add Crop", async (t) => {
   await t.test("Account creation", (t) => {
     assert.strictEqual(accountCreationRes.userData.userType, "farmer");
     assert.strictEqual(accountCreationRes.userData.userId, uid);
+  });
+
+  let quantity = getRand(100);
+  const sendAddCropReq = await fetch(apiAddr("/api/product"), {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: accountCreationRes.token,
+    },
+    body: JSON.stringify({
+      cropName: CROP_NAMES[getRand(2)],
+      userId: uid,
+      quantity: quantity,
+      availableQuantity: quantity,
+      price: 50,
+    }),
+  });
+
+  const addCropRes = await sendAddCropReq.json();
+
+  await t.test("Add Crop", (t) => {
+    assert.strictEqual(addCropRes.success, true);
   });
 });
