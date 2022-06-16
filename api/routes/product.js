@@ -71,7 +71,7 @@ router.post("/", myPassport.authenticate("jwt", { session: false }), isAllowed, 
     await demandModel.findOneAndUpdate({ cropName: req.body.cropName }, { $set: { productSupplyTotals: 0 } });
   }
   await product.save();
-  res.status(201).json({ success: true, data: product });
+  res.status(201).json({ success: true, data: product, message: "Product added successfully" });
 });
 
 // For getting all the products of a particular user
