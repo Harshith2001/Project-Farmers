@@ -137,7 +137,7 @@ router.post(
       });
       await order.save();
 
-      res.status(201).json({ success: true, data: order });
+      res.status(201).json({ success: true, data: order, message: "Order placed successfully" });
     }
   }
   //have to update the available quantity of the product in product model.

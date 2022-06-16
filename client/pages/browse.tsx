@@ -1,6 +1,8 @@
 import { AppShell, Button, Group, Modal, NumberInput, Paper, Title, Text, Stack } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
+import { NotificationsProvider, showNotification } from "@mantine/notifications";
 import React, { useEffect, useState } from "react";
+import { Check } from "tabler-icons-react";
 import HeaderMenuColored from "../components/NavHeader";
 import { UserContextData } from "../lib/UserContext";
 
@@ -43,6 +45,14 @@ function ProductCard({ data }: { data: ProductInfoDto | null }) {
       },
     });
     let fetchedPrice = await x.json();
+    showNotification({
+      title: fetchedPrice.message,
+      message: `${data?.cropName} - ${form.values.quantity}Kgs bought`,
+      icon: <Check size={48} strokeWidth={2} color={"white"} />,
+      autoClose: 10000,
+    });
+    setTimeout(() => setOpened(false), 500);
+    
     // setPrice(fetchedPrice as string);
     console.log(fetchedPrice);
   }
@@ -103,12 +113,14 @@ export default function browse() {
   }, []);
 
   return (
-    <AppShell padding={0} header={<HeaderMenuColored />}>
-      <Stack style={{ margin: "0 auto", width: "500px" }}>
-        {data.map((item) => (
-          <ProductCard data={item} />
-        ))}
-      </Stack>
-    </AppShell>
+    <NotificationsProvider>
+      <AppShell padding={0} header={<HeaderMenuColored />}>
+        <Stack style={{ margin: "0 auto", width: "500px" }}>
+          {data.map((item) => (
+            <ProductCard data={item} />
+          ))}
+        </Stack>
+      </AppShell>
+    </NotificationsProvider>
   );
 }
