@@ -1,14 +1,23 @@
 import { Router } from "express";
-import priceModel from "../models/priceModel.js";
+import demandModel from "../models/demandModel.js";
 const router = Router();
 
-router.get("/", (req, res) => {
-  res.json("Hello World");
+router.get("/:id", (req, res) => {
+  demandModel.findOne({ cropName: req.params.id }).then((data) => res.json(data));
 });
 
 router.post("/", (req, res) => {
-  let price = new priceModel(req.body);
-  price.save().then((data) => res.json(data));
+  let demandData = new demandModel(req.body);
+  demandData.save((err, data) => {
+    if (err) {
+      res.json(err);
+    } else {
+      res.status(200).json({
+        message: "Success",
+        data: data,
+      });
+    }
+  });
 });
 
 export default router;
