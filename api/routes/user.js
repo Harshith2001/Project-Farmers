@@ -25,12 +25,17 @@ const isAllowed = async (req, res, next) => {
   });
 
   if (utype !== "farmer") {
-    await userModel.find({ userId: myPassport.id }).then((user) => {
-      if (user[0].userId !== req.params.id) {
+    await userModel
+      .find({ userId: myPassport.id })
+      .then((user) => {
+        if (user[0].userId !== req.params.id) {
+          return res.status(403).send("Forbidden");
+        }
+        next();
+      })
+      .catch((err) => {
         return res.status(403).send("Forbidden");
-      }
-      next();
-    });
+      });
   } else {
     next();
   }
