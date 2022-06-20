@@ -18,11 +18,17 @@ const isAuth = (req, res, next) => {
   }
 };
 
+
 const isAllowed = async (req, res, next) => {
   let utype;
-  await userModel.find({ userId: req.params.id }).then((user) => {
-    utype = user[0].userType;
-  });
+  await userModel
+    .find({ userId: req.params.id })
+    .then((user) => {
+      utype = user[0].userType;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 
   if (utype !== "farmer") {
     await userModel
