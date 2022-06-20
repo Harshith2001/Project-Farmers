@@ -10,7 +10,9 @@ function OrderCard({ data }: { data: orderDto | null }) {
       <Stack>
         <Group style={{ backgroundColor: "rgb(120, 180, 240)", borderRadius: "5px" }} p={5}>
           <Title order={2}>{data?.cropName || "UNKNOWN PRODUCT"}</Title>
-          <Text size="xs">from {data?.fUserId || "Pupa"}</Text>
+          <Text size="xs" weight={700}>
+            Sold by {data?.fUserId || "Pupa"} to {data?.eUserId || "Pupa"}
+          </Text>
         </Group>
         <Group position="apart">
           <Text size="xs">Order Id: {data?._id || "1234"}</Text>
