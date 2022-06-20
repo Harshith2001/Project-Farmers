@@ -7,9 +7,14 @@ import { Check } from "tabler-icons-react";
 import HeaderMenuColored from "../components/NavHeader";
 import { UserContextData } from "../lib/UserContext";
 
+type IFetchedPrice = {
+  price: string;
+  pricePerKg: string;
+};
+
 function ProductCard({ data }: { data: ProductInfoDto | null }) {
   const [opened, setOpened] = useState(false);
-  const [price, setPrice] = useState<string | null>(null);
+  const [price, setPrice] = useState<IFetchedPrice | null>(null);
 
   const form = useForm({
     initialValues: {
@@ -24,7 +29,9 @@ function ProductCard({ data }: { data: ProductInfoDto | null }) {
       process.env.API_URL + `/api/price/${data?.cropName}?quantity=${form.values.quantity}`
     );
     let fetchedPrice = await x.json();
-    setPrice(fetchedPrice as string);
+    console.log(fetchedPrice);
+    setPrice(fetchedPrice as IFetchedPrice);
+    console.log(price);
   }
   async function onSubmitx() {
     // console.log(form.values);
@@ -94,8 +101,8 @@ function ProductCard({ data }: { data: ProductInfoDto | null }) {
         {price != null && (
           <Paper radius="md" p="md" withBorder m={5}>
             <Group position="apart">
-              <Text size="lg" weight={500} align="center">
-                Final Price: {price}
+              <Text size="md" weight={500} align="center">
+                Final Price: {price.price} @ {price.pricePerKg} per Kg
               </Text>
               <Button onClick={() => onSubmitx()}>Confirm Buy</Button>
             </Group>
