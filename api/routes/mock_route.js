@@ -85,30 +85,47 @@ router.get("/orders", (req, res) => {
 });
 
 router.get("/shipping", async (req, res) => {
-  let data = await purchaseModel.aggregate([
-    { $addFields: { purchaseId: { $toString: "$_id" } } },
+  let x = await customerModel.aggregate([
+    {
+      $addFields: {
+        customerId: { $toString: "$_id" },
+      },
+    },
+    {
+      $lookup: {
+        from: "purchases",
+        localField: "customerId",
+        foreignField: "customerId",
+        as: "purchaseOrder",
+      },
+    },
+    { $unwind: "$purchaseOrder" },
+    {
+      $addFields: {
+        purchaseId_temp: { $toString: "$purchaseOrder._id" },
+      },
+    },
     {
       $lookup: {
         from: "shippings",
-        localField: "purchaseId",
+        localField: "purchaseId_temp",
         foreignField: "purchaseId",
-        as: "shippings",
+        as: "purchaseOrder.shipmentDetail",
       },
     },
-    { $unwind: "$shippings" },
     {
-      $project: {
-        _id: 1,
-        productName: 1,
-        pricing: 1,
-        mrp: 1,
-        quantity: 1,
-        shipping: "$shippings",
+      $group: {
+        _id: "$customerId",
+        customerName: { $first: "$customerName" },
+        email: { $first: "$email" },
+        phone: { $first: "$phone" },
+        city: { $first: "$city" },
+        purchaseOrder: { $push: "$purchaseOrder" },
       },
     },
   ]);
 
-  res.json(data);
+  res.json(x);
 });
 
 export default router;
