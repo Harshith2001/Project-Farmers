@@ -1,23 +1,28 @@
 import { Router } from "express";
-import demandModel from "../models/demandModel.js";
+import customerModel from "../models/customerModel.js";
+import purchaseModel from "../models/purchaseModel.js";
+import shipModel from "../models/shipModel.js";
 const router = Router();
 
-router.get("/:id", (req, res) => {
-  demandModel.findOne({ cropName: req.params.id }).then((data) => res.json(data));
+router.post("/customer/", (req, res) => {
+  let customer = new customerModel(req.body);
+  customer.save().then((data) => res.json(data));
 });
 
-router.post("/", (req, res) => {
-  let demandData = new demandModel(req.body);
-  demandData.save((err, data) => {
-    if (err) {
-      res.json(err);
-    } else {
-      res.status(200).json({
-        message: "Success",
-        data: data,
-      });
-    }
-  });
+router.post("/purchase/", (req, res) => {
+  let purchase = new purchaseModel(req.body);
+  if (req.body.mrp < req.body.pricing) {
+    return res.status(400).send("Pricing cannot be greater than MRP");
+  } else {
+  purchase.save().then((data) => res.json(data));
+  }
 });
+
+router.post("/ship/", (req, res) => {
+  let ship = new shipModel(req.body);
+  ship.save().then((data) => res.json(data));
+});
+
+router
 
 export default router;
