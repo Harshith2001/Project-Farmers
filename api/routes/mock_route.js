@@ -44,14 +44,13 @@ router.get("/orders", (req, res) => {
         },
         { $unwind: "$purchases" },
         {
-          $project: {
-            _id: 1,
-            customerId: 1,
-            customerName: 1,
-            email: 1,
-            phone: 1,
-            city: 1,
-            purchases: "$purchases",
+          $group: {
+            _id: "$_id",
+            customerName: { $first: "$customerName" },
+            email: { $first: "$email" },
+            phone: { $first: "$phone" },
+            city: { $first: "$city" },
+            purchaseOrders: { $push: "$purchases" },
           },
         },
       ])
@@ -70,13 +69,16 @@ router.get("/orders", (req, res) => {
           },
         },
         { $unwind: "$purchases" },
-        { $group: { _id:{
-          customerId: "$customerId",
-          customerName: "$customerName",
-          email: "$email",
-          phone: "$phone",
-          city: "$city",
-        }, purchaseOrders: { $push: "$purchases" } } },
+        {
+          $group: {
+            _id: "$_id",
+            customerName: { $first: "$customerName" },
+            email: { $first: "$email" },
+            phone: { $first: "$phone" },
+            city: { $first: "$city" },
+            purchaseOrders: { $push: "$purchases" },
+          },
+        },
       ])
       .then((data) => res.json(data));
   }
